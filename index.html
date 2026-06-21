@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Business Management System</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <style>
+        :root {
+            --primary-color: #800020; /* IndusInd Burgundy */
+            --gold-color: #e5a93b; /* IndusInd Gold */
+            --secondary-color: #f4e6eb;
+            --bill-primary: #1e3a8a; /* Corporate Blue for Bill */
+            --bill-secondary: #f0f4f8;
+            --search-color: #0d9488; /* Teal color for Search Sections */
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+            min-width: 1024px; 
+        }
+
+        /* --- Login Page Styles --- */
+        .login-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+        }
+        .login-container {
+            background: #fff;
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            border-top: 5px solid var(--bill-primary);
+        }
+        .login-container h2 {
+            margin-bottom: 25px;
+            color: #333;
+            font-size: 24px;
+        }
+        .login-group {
+            margin-bottom: 18px;
+            text-align: left;
+        }
+        .login-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            color: #4a5568;
+            margin-bottom: 6px;
+        }
+        .login-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 15px;
+            box-sizing: border-box;
+            background: #f8fafc;
+        }
+        .login-group input:focus {
+            outline: none;
+            border-color: var(--bill-primary);
+            background: #fff;
+        }
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--bill-primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+        .btn-login:hover {
+            opacity: 0.9;
+        }
+        .login-error {
+            color: #dc2626;
+            font-size: 14px;
+            font-weight: bold;
+            margin-top: 15px;
+            display: none;
+        }
+
+        /* Dashboard Styles */
+        .dashboard-container {
+            max-width: 700px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .dashboard-title {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 30px;
+            font-weight: bold;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 15px;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .dash-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 120px;
+            padding: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            text-align: center;
+            gap: 10px;
+        }
+
+        .btn-passbook-menu { background-color: var(--primary-color); }
+        .btn-bill-menu { background-color: var(--bill-primary); }
+        .btn-search-passbook-menu { background-color: #0f766e; }
+        .btn-search-bill-menu { background-color: #1e40af; }
+        
+        .dash-btn:hover { transform: translateY(-4px); opacity: 0.95; box-shadow: 0 8px 16px rgba(0,0,0,0.2); }
+
+        .btn-back {
+            background-color: #6c757d;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+            cursor: pointer;
+            border: none;
+        }
+
+        .app-section { display: none; }
+        .active-section { display: block !important; }
+        .hidden-section { display: none !important; }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        /* --- Passbook Styles --- */
+        .brand-header { border-bottom: 3px solid var(--primary-color); padding-bottom: 10px; margin-bottom: 15px; }
+        .brand-table { width: 100%; border-collapse: collapse; }
+        .brand-table td { border: none; padding: 4px; vertical-align: top; }
+        .logo-title-container { font-family: Arial, Helvetica, sans-serif; }
+        .logo-main { font-size: 42px; font-weight: bold; font-style: italic; color: var(--primary-color); line-height: 1.1; margin: 0; display: inline-block; }
+        .logo-bank { font-size: 38px; font-weight: bold; font-style: italic; color: var(--gold-color); line-height: 1; margin: -5px 0 0 40px; }
+        .branch-address-sub { font-size: 13px; color: #b5332a; font-style: italic; font-weight: 500; margin-top: 8px; line-height: 1.4; }
+        .header-right-details { text-align: right; font-family: Arial, Helvetica, sans-serif; }
+        .header-branch-name { font-size: 24px; font-weight: bold; color: #b5332a; margin-bottom: 4px; }
+        .header-code-line { font-size: 15px; font-weight: bold; color: #4a1525; margin: 2px 0; }
+        .header-code-line input, .bill-header-right input { border: 1px solid #ccc; padding: 4px; border-radius: 4px; font-size: 14px; text-align: center; }
+        .account-info { background: var(--secondary-color); padding: 15px; border-radius: 6px; margin-bottom: 20px; }
+        .form-grid { display: table; width: 100%; }
+        .form-body-cell { display: table-cell; vertical-align: top; }
+        .form-photo-cell { display: table-cell; vertical-align: middle; width: 150px; padding-left: 15px; }
+        .fields-table { width: 100%; border-collapse: collapse; }
+        .fields-table td { padding: 6px; border: none; vertical-align: top; width: 50%; }
+        .info-group { display: block; margin-bottom: 10px; }
+        .info-group label { display: block; font-size: 13px; font-weight: bold; color: var(--primary-color); margin-bottom: 4px; }
+        .info-group label::after { content: " *"; color: red; }
+        .info-group input, .info-group textarea, .bill-table input, .bill-table select { width: 100%; border: 1px solid #ccc; padding: 8px; border-radius: 4px; font-size: 14px; box-sizing: border-box; background-color: #fff; }
+        .uppercase-field { text-transform: uppercase; }
+        .info-group textarea { resize: none; height: 55px; }
+        .balance-note-container { margin-top: 10px; padding: 2px 5px; }
+        .balance-info-note { font-size: 10px; color: #555; font-weight: 500; line-height: 1.3; border-left: 3px solid var(--primary-color); padding-left: 6px; }
+        .photo-box-wrapper { text-align: center; }
+        .photo-box { width: 125px; height: 155px; border: 2px dashed var(--primary-color); border-radius: 6px; background: #fff; color: #777; font-size: 11px; font-weight: bold; text-align: center; box-sizing: border-box; margin: 0 auto; display: table; }
+        .photo-box-text { display: table-cell; vertical-align: middle; padding: 8px; }
+        
+        .btn-container { margin-top: 20px; text-align: left; }
+        button.action-btn { padding: 12px 24px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 15px; transition: 0.3s; margin: 5px; }
+        .btn-pdf { background-color: #28a745; color: white; }
+        .btn-print { background-color: #007bff; color: white; }
+        button.action-btn:hover { opacity: 0.9; }
+
+        /* সেভ করার আগে বাটন হাইড রাখার জন্য বিশেষ ক্লাস */
+        .post-save-actions { display: none; }
+
+        /* --- GST Tax Invoice Styles --- */
+        .bill-header { border-bottom: 3px solid var(--bill-primary); padding-bottom: 12px; margin-bottom: 20px; }
+        .bill-title-main { font-size: 32px; font-weight: bold; color: var(--bill-primary); letter-spacing: 1px; margin: 0; }
+        .bill-subtitle { font-size: 14px; color: #555; font-weight: bold; margin-top: 5px; }
+        .bill-header-right { text-align: right; }
+        .bill-sect-title { font-size: 14px; font-weight: bold; color: var(--bill-primary); background-color: var(--bill-secondary); padding: 6px; margin: 15px 0 10px 0; border-radius: 4px; text-transform: uppercase; }
+        
+        .bill-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .bill-table th { background-color: var(--bill-primary); color: white; padding: 10px; font-size: 13px; text-align: left; border: 1px solid #ddd; }
+        .bill-table td { padding: 8px; border: 1px solid #ddd; vertical-align: middle; }
+        
+        .calculated-field { background-color: #f9f9f9 !important; font-weight: bold; color: #333; }
+        
+        .summary-box { float: right; width: 40%; margin-top: 20px; border-collapse: collapse; }
+        .summary-box td { padding: 8px; border: 1px solid #ddd; font-size: 14px; }
+        .summary-box tr.total-row { font-weight: bold; background-color: #e2e8f0; color: #000; }
+        .clear-fix { clear: both; }
+        
+        .terms-box { font-size: 11px; color: #666; margin-top: 20px; border-top: 1px dashed #ccc; padding-top: 10px; width: 55%; float: left; }
+
+        /* --- Search Engine Styles --- */
+        .search-wrapper { display: flex; gap: 20px; margin-top: 10px; align-items: flex-start; }
+        .search-control-panel { width: 30%; background: #f8fafc; padding: 20px; border-radius: 8px; border: 1px solid #e2e8f0; }
+        .search-display-panel { width: 70%; background: #fff; padding: 20px; border-radius: 8px; border: 1px solid #e2e8f0; min-height: 250px; }
+        .search-input-group { margin-bottom: 15px; }
+        .search-input-group label { display: block; font-size: 14px; font-weight: bold; color: #334155; margin-bottom: 6px; }
+        .search-input-group input { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; font-size: 14px; }
+        .btn-search-trigger { width: 100%; padding: 12px; background-color: var(--search-color); color: white; border: none; border-radius: 6px; font-weight: bold; font-size: 15px; cursor: pointer; }
+        .btn-search-trigger:hover { opacity: 0.9; }
+        .no-data-msg { color: #94a3b8; text-align: center; font-style: italic; margin-top: 80px; font-size: 15px; }
+        
+        .preview-text { font-size: 14px; font-weight: bold; color: #111; padding: 4px 0; display: block; border-bottom: 1px dashed #ddd; min-height: 20px; }
+        .preview-label { font-size: 13px; font-weight: bold; color: var(--primary-color); margin-bottom: 2px; display: block;}
+        .preview-label-bill { font-size: 13px; font-weight: bold; color: var(--bill-primary); margin-bottom: 2px; display: block;}
+
+        /* --- PRINT / PDF STYLING --- */
+        @media print {
+            body { background: none; padding: 0; min-width: auto; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .container { box-shadow: none; padding: 0; max-width: 100%; }
+            button, .btn-container, .btn-back, #dashboard-view, .search-control-panel, .btn-search-trigger, .login-wrapper { display: none !important; }
+            .search-wrapper { display: block !important; }
+            .search-display-panel { width: 100% !important; border: none !important; padding: 0 !important; }
+            input, textarea, select { border: none !important; background: transparent !important; padding: 0 !important; font-size: 14px !important; color: #000 !important; -webkit-appearance: none; appearance: none; }
+            .info-group label::after { content: "" !important; }
+            .account-info { background: #fdfafb !important; border: 1px solid #b5332a; }
+            .bill-sect-title { background-color: #f0f4f8 !important; }
+            .bill-table th { background-color: #1e3a8a !important; color: #fff !important; }
+            .calculated-field { background-color: transparent !important; }
+            .preview-text { border-bottom: none !important; }
+            @page { size: A4; margin: 10mm 12mm; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="login-view" class="login-wrapper active-section">
+    <div class="login-container">
+        <h2>SRMB AMIGO Login</h2>
+        <form onsubmit="handleLogin(event)">
+            <div class="login-group">
+                <label>User ID</label>
+                <input type="text" id="login-userid" placeholder="Enter User ID" required>
+            </div>
+            <div class="login-group">
+                <label>Password</label>
+                <input type="password" id="login-password" inputmode="numeric" placeholder="Enter Password" required>
+            </div>
+            <button type="submit" class="btn-login">Login</button>
+            <div id="login-error-msg" class="login-error">❌ Invalid User ID or Password!</div>
+        </form>
+    </div>
+</div>
+
+<div id="dashboard-view" class="dashboard-container app-section">
+    <div class="dashboard-title"><b>SRMB AMIGO</b> Management Desk</div>
+    <div class="dashboard-grid">
+        <button class="dash-btn btn-passbook-menu" onclick="switchSection('passbook-section')">📁 <br>Create Passbook</button>
+        <button class="dash-btn btn-bill-menu" onclick="switchSection('bill-section')">🧾 <br>Create GST Retail Bill</button>
+        <button class="dash-btn btn-search-passbook-menu" onclick="switchSection('search-passbook-section')">🔍 <br>Search Passbook</button>
+        <button class="dash-btn btn-search-bill-menu" onclick="switchSection('search-bill-section')">🔍 <br>Search Invoices</button>
+    </div>
+</div>
+
+<div id="passbook-section" class="app-section">
+    <div class="container">
+        <button class="btn-back" onclick="showDashboard()">← Back to Dashboard</button>
+        
+        <form id="passbook-form" onsubmit="savePassbookData(event)">
+            <div id="passbook-content">
+                <div class="brand-header">
+                    <table class="brand-table">
+                        <tr>
+                            <td>
+                                <div class="logo-title-container">
+                                    <div class="logo-main">IndusInd</div>
+                                    <div class="logo-bank">Bank</div>
+                                </div>
+                                <div class="branch-address-sub">
+                                    Address:- NH31C, Assam Road, Barobisha, Dakshin Rampur,<br>
+                                    Ragulator Market, Alipurduar, Westbengal, 736207.
+                                </div>
+                            </td>
+                            <td style="width: 40%;">
+                                <div class="header-right-details">
+                                    <div class="header-branch-name">Branch:- Barobisha</div>
+                                    <div class="header-code-line">MICR Code:- 736234701</div>
+                                    <div class="header-code-line">IFSC Code:- INDB0000728</div>
+                                    <div class="header-code-line">Issue Date:- <input type="text" id="current-date" required></div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="account-info">
+                    <div class="form-grid">
+                        <div class="form-body-cell">
+                            <table class="fields-table">
+                                <tr>
+                                    <td>
+                                        <div class="info-group">
+                                            <label>Account Holder Name</label>
+                                            <input type="text" id="holder-name" class="uppercase-field" placeholder="ENTER NAME" required>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="info-group">
+                                            <label>Account Number</label>
+                                            <input type="number" id="p-acc-no" placeholder="Enter Account Number" required>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="info-group">
+                                            <label>Care Of</label>
+                                            <input type="text" id="p-co" class="uppercase-field" placeholder="ENTER C/O NAME" required>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="info-group">
+                                            <label>Customer ID</label>
+                                            <input type="number" id="p-cust-id" placeholder="Enter Customer ID" required>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="info-group">
+                                            <label>UIDAI (Aadhaar)</label>
+                                            <input type="text" id="p-aadhaar" placeholder="Enter 12-Digit Aadhaar" required>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="info-group">
+                                            <label>Mobile Number</label>
+                                            <input type="number" id="p-mob" placeholder="Enter Phone Number" required>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="width: 100%;">
+                                        <div class="info-group">
+                                            <label>Customer Address</label>
+                                            <textarea id="p-addr" class="uppercase-field" placeholder="ENTER COMPLETE ADDRESS HERE..." required></textarea>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <div class="balance-note-container">
+                                <div class="balance-info-note">
+                                    Get Account Balance Give missed call on 18002741000 or WhatsApp +91 22 4406 6666
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-photo-cell">
+                            <div class="photo-box-wrapper">
+                                <div class="photo-box">
+                                    <div class="photo-box-text">
+                                        Affix<br>Passport Size<br>Photograph
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn-container">
+                <button type="submit" class="action-btn" style="background-color: #6366f1; color:white;">💾 Save Record</button>
+                <span id="passbook-action-group" class="post-save-actions">
+                    <button type="button" class="action-btn btn-pdf" onclick="downloadPassbookPDF()">Download PDF</button>
+                    <button type="button" class="action-btn btn-print" onclick="window.print()">Print Page</button>
+                </span>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="bill-section" class="app-section">
+    <div class="container">
+        <button class="btn-back" onclick="showDashboard()">← Back to Dashboard</button>
+        
+        <form id="bill-form" onsubmit="saveBillData(event)">
+            <div id="bill-content">
+                <div class="bill-header">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <tr>
+                            <td>
+                                <div class="bill-title-main">SRMB AMIGO</div>
+                                <div class="bill-subtitle">Authorized Mobile Sale & Service Center</div>
+                                <div style="font-size: 12px; color: #444; margin-top: 5px;">
+                                    Main Road, Dalimpur, Falakata, Alipurduar, WB, 735211<br>
+                                    <b>GSTIN:</b> 19DBAPB7017Q1ZE | <b>Mob:</b> +91 9932833018, +91 8250965959
+                                </div>
+                            </td>
+                            <td class="bill-header-right" style="width: 40%; vertical-align: top;">
+                                <div style="font-size: 20px; font-weight: bold; color: var(--bill-primary); margin-bottom: 8px;">TAX INVOICE</div>
+                                <div style="font-size: 14px; font-weight: bold; margin-bottom: 5px;">Invoice No: <input type="text" id="bill-inv-no" readonly style="width:140px; background-color:#f1f5f9; border:1px solid #cbd5e1; font-weight:bold;"></div>
+                                <div style="font-size: 14px; font-weight: bold;">Date: <input type="text" id="bill-date" style="width:140px;"></div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="bill-sect-title">Customer Details</div>
+                <table class="fields-table" style="margin-bottom: 15px;">
+                    <tr>
+                        <td>
+                            <div class="info-group">
+                                <label>Customer Name</label>
+                                <input type="text" id="bill-cust-name" class="uppercase-field" placeholder="Enter Customer Name" required>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="info-group">
+                                <label>Mobile Number</label>
+                                <input type="number" id="bill-cust-mob" placeholder="Enter Mobile Number" required>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div class="info-group">
+                                <label>Customer Address</label>
+                                <input type="text" id="bill-cust-addr" class="uppercase-field" placeholder="Enter Full Address">
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="bill-sect-title">Product Details</div>
+                <table class="bill-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 40%;">Description of Goods (Brand & Model)</th>
+                            <th style="width: 25%;">IMEI / Serial No.</th>
+                            <th style="width: 10%;">QTY</th>
+                            <th style="width: 25%;">Rate (INR, Incl. GST)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <input type="text" id="bill-prod-desc" class="uppercase-field" placeholder="e.g. SAMSUNG GALAXY M34 5G" required>
+                            </td>
+                            <td>
+                                <input type="text" id="bill-prod-imei" class="uppercase-field" placeholder="Enter 15-digit IMEI" required>
+                            </td>
+                            <td>
+                                <input type="number" id="bill-qty" value="1" min="1" oninput="calculateBillTotalFromInclusive()" style="text-align: center;">
+                            </td>
+                            <td>
+                                <input type="number" id="bill-rate-inclusive" placeholder="0.00" oninput="calculateBillTotalFromInclusive()" style="text-align: right; font-weight: bold;">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="terms-box">
+                    <b>Terms & Conditions:</b><br>
+                    1. Goods once sold will not be taken back or exchanged.<br>
+                    2. Warranty claims must be made directly to the respective brand service center.<br>
+                    3. This is a computer-generated tax invoice.
+                </div>
+
+                <table class="summary-box">
+                    <tr>
+                        <td>Taxable Value (Excl. GST)</td>
+                        <td style="text-align: right;"><input type="text" id="sub-total" class="calculated-field" value="0.00" readonly style="text-align: right;"></td>
+                    </tr>
+                    <tr>
+                        <td>CGST (9%)</td>
+                        <td style="text-align: right;"><input type="text" id="cgst-amt" class="calculated-field" value="0.00" readonly style="text-align: right;"></td>
+                    </tr>
+                    <tr>
+                        <td>SGST (9%)</td>
+                        <td style="text-align: right;"><input type="text" id="sgst-amt" class="calculated-field" value="0.00" readonly style="text-align: right;"></td>
+                    </tr>
+                    <tr class="total-row">
+                        <td>Total Amount (Incl. GST)</td>
+                        <td style="text-align: right;"><input type="text" id="grand-total" class="calculated-field" value="0.00" readonly style="text-align: right; font-weight: bold;"></td>
+                    </tr>
+                </table>
+                <div class="clear-fix"></div>
+            </div>
+
+            <div class="btn-container">
+                <button type="submit" class="action-btn" style="background-color: #6366f1; color:white;">💾 Save Record</button>
+                <span id="bill-action-group" class="post-save-actions">
+                    <button type="button" class="action-btn btn-pdf" onclick="downloadBillPDF()">Download PDF</button>
+                    <button type="button" class="action-btn btn-print" onclick="window.print()">Print Invoice</button>
+                </span>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="search-passbook-section" class="app-section">
+    <div class="container">
+        <button class="btn-back" onclick="showDashboard()">← Back to Dashboard</button>
+        <div class="bill-sect-title" style="background-color: #0f766e; color: white;">🔍 Search Passbook Registry</div>
+        
+        <div class="search-wrapper">
+            <div class="search-control-panel">
+                <div class="search-input-group">
+                    <label>Enter Account Number</label>
+                    <input type="number" id="search-p-acc" placeholder="e.g. 10009837482">
+                </div>
+                <button type="button" class="btn-search-trigger" onclick="executePassbookSearch()">Search Now</button>
+            </div>
+            
+            <div class="search-display-panel" id="passbook-result-panel">
+                <div class="no-data-msg">Enter an Account Number on the left pane to find registry data.</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="search-bill-section" class="app-section">
+    <div class="container">
+        <button class="btn-back" onclick="showDashboard()">← Back to Dashboard</button>
+        <div class="bill-sect-title" style="background-color: #1e40af; color: white;">🔍 Search Invoices & Billing Logs</div>
+        
+        <div class="search-wrapper">
+            <div class="search-control-panel">
+                <div class="search-input-group">
+                    <label>Enter Invoice Number</label>
+                    <input type="text" id="search-b-inv" placeholder="e.g. SRMB2026001" class="uppercase-field">
+                </div>
+                <button type="button" class="btn-search-trigger" style="background-color: #1e40af;" onclick="executeBillSearch()">Search Now</button>
+            </div>
+            
+            <div class="search-display-panel" id="bill-result-panel">
+                <div class="no-data-msg">Enter a valid Tax Invoice Number on the left pane to retrieve statistics.</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // --- ফায়ারবেস কনফিগারেশন সেটআপ ---
+    const firebaseConfig = {
+        apiKey: "AIzaSyCBRxYoGdP32AcxSFca8bYtKR6sy4G4WfE",
+        authDomain: "srmb-amigo.firebaseapp.com",
+        databaseURL: "https://srmb-amigo-default-rtdb.firebaseio.com", 
+        projectId: "srmb-amigo",
+        storageBucket: "srmb-amigo.firebasestorage.app",
+        messagingSenderId: "624848891216",
+        appId: "1:624848891216:web:24462b58ab5b1692651055"
+    };
+    
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    // অটোমেটিক আজকের তারিখ সেট করা
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const yyyy = today.getFullYear();
+    const formattedDate = dd + '/' + mm + '/' + yyyy;
+    
+    document.getElementById('current-date').value = formattedDate;
+    document.getElementById('bill-date').value = formattedDate;
+
+    // --- লগইন কন্ট্রোল সিস্টেম ---
+    function handleLogin(e) {
+        e.preventDefault();
+        const userId = document.getElementById('login-userid').value.trim();
+        const pass = document.getElementById('login-password').value.trim();
+        const errMsg = document.getElementById('login-error-msg');
+
+        if (userId === "srmbamigo" && pass === "010101") {
+            sessionStorage.setItem('isLoggedIn', 'true');
+            errMsg.style.display = "none";
+            document.getElementById('login-view').classList.remove('active-section');
+            document.getElementById('login-view').classList.add('hidden-section');
+            showDashboard();
+        } else {
+            errMsg.style.display = "block";
+        }
+    }
+
+    // পেজ লোড হওয়ার সময় সেশন চেক করা
+    window.onload = function() {
+        if (sessionStorage.getItem('isLoggedIn') === 'true') {
+            document.getElementById('login-view').className = 'login-wrapper hidden-section';
+            showDashboard();
+        }
+    };
+
+    // লেআউট নেভিগেশন কন্ট্রোল
+    function switchSection(sectionId) {
+        if(sessionStorage.getItem('isLoggedIn') !== 'true') return;
+        document.getElementById('dashboard-view').classList.remove('active-section');
+        document.getElementById('dashboard-view').classList.add('hidden-section');
+        
+        const sections = ['passbook-section', 'bill-section', 'search-passbook-section', 'search-bill-section'];
+        sections.forEach(id => document.getElementById(id).classList.remove('active-section'));
+        
+        document.getElementById(sectionId).classList.add('active-section');
+        document.getElementById('passbook-action-group').style.display = "none";
+        document.getElementById('bill-action-group').style.display = "none";
+
+        if (sectionId === 'bill-section') {
+            fetchNextInvoiceNumber();
+        }
+    }
+
+    function showDashboard() {
+        if(sessionStorage.getItem('isLoggedIn') !== 'true') return;
+        const sections = ['passbook-section', 'bill-section', 'search-passbook-section', 'search-bill-section'];
+        sections.forEach(id => document.getElementById(id).classList.remove('active-section'));
+        
+        document.getElementById('dashboard-view').classList.remove('hidden-section');
+        document.getElementById('dashboard-view').classList.add('active-section');
+    }
+
+    // --- সরাসরি ফায়ারবেস থেকে ইনভয়েস নম্বর জেনারেটর ---
+    function fetchNextInvoiceNumber() {
+        const invInput = document.getElementById('bill-inv-no');
+        invInput.value = "Loading..."; 
+        invInput.readOnly = true;
+        invInput.style.backgroundColor = "#f1f5f9";
+
+        const currentYear = new Date().getFullYear();
+
+        database.ref('metadata/last_invoice_serial').once('value').then((snapshot) => {
+            let lastSerial = snapshot.val();
+            if (!lastSerial) {
+                lastSerial = 0;
+            }
+            
+            const nextSerial = lastSerial + 1;
+            const formattedSerial = String(nextSerial).padStart(3, '0');
+            
+            invInput.value = `SRMB${currentYear}${formattedSerial}`;
+            invInput.setAttribute('data-serial', nextSerial);
+        }).catch((error) => {
+            console.error("Firebase Error:", error);
+            alert("❌ ফায়ারবেস থেকে ইনভয়েস নম্বর লোড করা যায়নি।");
+        });
+    }
+
+    // ম্যাথমেটিক্যাল ক্যালকুলেশন (GST Inclusive)
+    function calculateBillTotalFromInclusive() {
+        const qty = parseFloat(document.getElementById('bill-qty').value) || 0;
+        const totalInclRate = parseFloat(document.getElementById('bill-rate-inclusive').value) || 0;
+        
+        const grandTotal = qty * totalInclRate;
+        const taxableValue = grandTotal / 1.18;
+        const totalGstAmount = grandTotal - taxableValue;
+        const cgst = totalGstAmount / 2;
+        const sgst = totalGstAmount / 2;
+
+        document.getElementById('sub-total').value = taxableValue.toFixed(2);
+        document.getElementById('cgst-amt').value = cgst.toFixed(2);
+        document.getElementById('sgst-amt').value = sgst.toFixed(2);
+        document.getElementById('grand-total').value = grandTotal.toFixed(2);
+    }
+
+    // ফায়ারবেসে পাসবুক ডাটা সেভ করা
+    function savePassbookData(e) {
+        e.preventDefault();
+        const accNo = document.getElementById('p-acc-no').value.trim();
+        if(!accNo) return;
+
+        const passbookRecord = {
+            name: document.getElementById('holder-name').value.toUpperCase(),
+            accNo: accNo,
+            co: document.getElementById('p-co').value.toUpperCase(),
+            custId: document.getElementById('p-cust-id').value,
+            aadhaar: document.getElementById('p-aadhaar').value,
+            mob: document.getElementById('p-mob').value,
+            addr: document.getElementById('p-addr').value.toUpperCase(),
+            date: document.getElementById('current-date').value
+        };
+
+        localStorage.setItem('PB_' + accNo, JSON.stringify(passbookRecord));
+        
+        database.ref('passbooks/' + accNo).set(passbookRecord)
+        .then(() => {
+            alert(`✔ Passbook Data for A/C ${accNo} successfully saved to Firebase Cloud!`);
+            document.getElementById('passbook-action-group').style.display = "inline-block";
+        })
+        .catch((error) => {
+            console.error("Firebase Error:", error);
+            alert("❌ Firebase Cloud-এ সেভ হতে সমস্যা হয়েছে।");
+        });
+    }
+
+    // ফায়ারবেসে ইনভয়েস ডাটা সেভ করা
+    function saveBillData(e) {
+        e.preventDefault();
+        const invInput = document.getElementById('bill-inv-no');
+        const invNo = invInput.value.trim().toUpperCase();
+        
+        if(!invNo || invNo === "LOADING...") {
+            alert("Please wait until the invoice number is loaded.");
+            return;
+        }
+
+        let currentSerial = parseInt(invInput.getAttribute('data-serial'));
+        if (isNaN(currentSerial)) {
+            const parts = invNo.split('/');
+            currentSerial = parseInt(parts[parts.length - 1]) || 1;
+        }
+        
+        const billRecord = {
+            invNo: invNo,
+            date: document.getElementById('bill-date').value,
+            custName: document.getElementById('bill-cust-name').value.toUpperCase(),
+            custMob: document.getElementById('bill-cust-mob').value,
+            custAddr: document.getElementById('bill-cust-addr').value.toUpperCase(),
+            prodDesc: document.getElementById('bill-prod-desc').value.toUpperCase(),
+            prodImei: document.getElementById('bill-prod-imei').value.toUpperCase(),
+            qty: document.getElementById('bill-qty').value,
+            rateIncl: document.getElementById('bill-rate-inclusive').value,
+            taxable: document.getElementById('sub-total').value,
+            cgst: document.getElementById('cgst-amt').value,
+            sgst: document.getElementById('sgst-amt').value,
+            grandTotal: document.getElementById('grand-total').value
+        };
+
+        const safeInvKey = invNo.replace(/\//g, "-");
+
+        const updates = {};
+        updates['bills/' + safeInvKey] = billRecord;
+        updates['metadata/last_invoice_serial'] = currentSerial; 
+
+        database.ref().update(updates)
+        .then(() => {
+            localStorage.setItem('BILL_' + invNo, JSON.stringify(billRecord));
+            alert(`✔ Invoice ${invNo} successfully saved!`);
+            document.getElementById('bill-action-group').style.display = "inline-block";
+        })
+        .catch((error) => {
+            console.error("Firebase Update Error:", error);
+            alert("❌ ডাটা সেভ করা যায়নি। ফায়ারবেস কানেকশন চেক করুন।");
+        });
+    }
+
+    // পাসবুক সার্চ
+    function executePassbookSearch() {
+        const query = document.getElementById('search-p-acc').value.trim();
+        const panel = document.getElementById('passbook-result-panel');
+        
+        if(!query) {
+            panel.innerHTML = '<div class="no-data-msg" style="color:red;">Please input a valid account sequence!</div>';
+            return;
+        }
+
+        panel.innerHTML = '<div class="no-data-msg">Searching Cloud Database...</div>';
+
+        database.ref('passbooks/' + query).once('value').then((snapshot) => {
+            let item = snapshot.val();
+            
+            if (!item) {
+                const localData = localStorage.getItem('PB_' + query);
+                if (localData) item = JSON.parse(localData);
+            }
+
+            if(!item) {
+                panel.innerHTML = '<div class="no-data-msg" style="color:#dc2626;">❌ No Record Found for Account Number: ' + query + '</div>';
+                return;
+            }
+
+            panel.innerHTML = `
+                <div id="print-search-pb-area">
+                    <div class="brand-header">
+                        <table class="brand-table">
+                            <tr>
+                                <td>
+                                    <div class="logo-title-container">
+                                        <div class="logo-main">IndusInd</div>
+                                        <div class="logo-bank">Bank</div>
+                                    </div>
+                                    <div class="branch-address-sub">
+                                        Address:- NH31C, Assam Road, Barobisha, Dakshin Rampur,<br>
+                                        Ragulator Market, Alipurduar, Westbengal, 736207.
+                                    </div>
+                                </td>
+                                <td style="width: 40%;">
+                                    <div class="header-right-details">
+                                        <div class="header-branch-name">Branch:- Barobisha</div>
+                                        <div class="header-code-line">MICR Code:- 736234701</div>
+                                        <div class="header-code-line">IFSC Code:- INDB0000728</div>
+                                        <div class="header-code-line">Issue Date:- <span class="preview-text" style="display:inline-block; border:none; min-width:80px;">${item.date}</span></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="account-info">
+                        <div class="form-grid">
+                            <div class="form-body-cell">
+                                <table class="fields-table">
+                                    <tr>
+                                        <td>
+                                            <div class="info-group">
+                                                <span class="preview-label">Account Holder Name</span>
+                                                <span class="preview-text">${item.name}</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="info-group">
+                                                <span class="preview-label">Account Number</span>
+                                                <span class="preview-text">${item.accNo}</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="info-group">
+                                                <span class="preview-label">Care Of</span>
+                                                <span class="preview-text">${item.co}</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="info-group">
+                                                <span class="preview-label">Customer ID</span>
+                                                <span class="preview-text">${item.custId}</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="info-group">
+                                                <span class="preview-label">UIDAI (Aadhaar)</span>
+                                                <span class="preview-text">[Aadhaar Redacted]</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="info-group">
+                                                <span class="preview-label">Mobile Number</span>
+                                                <span class="preview-text">${item.mob}</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" style="width: 100%;">
+                                            <div class="info-group">
+                                                <span class="preview-label">Customer Address</span>
+                                                <span class="preview-text" style="height:auto; white-space: pre-wrap;">${item.addr}</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                                
+                                <div class="balance-note-container">
+                                    <div class="balance-info-note">
+                                        Get Account Balance Give missed call on 18002741000 or WhatsApp +91 22 4406 6666
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-photo-cell">
+                                <div class="photo-box-wrapper">
+                                    <div class="photo-box">
+                                        <div class="photo-box-text">
+                                            Affix<br>Passport Size<br>Photograph
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-container" style="margin-top:15px;">
+                    <button type="button" class="action-btn btn-pdf" onclick="downloadSearchedPDF('print-search-pb-area', 'Passbook_${item.accNo}')">Save PDF</button>
+                    <button type="button" class="action-btn btn-print" onclick="window.print()">Print Passbook</button>
+                </div>
+            `;
+        });
+    }
+
+    // বিল সার্চ 
+    function executeBillSearch() {
+        let query = document.getElementById('search-b-inv').value.trim().toUpperCase();
+        const panel = document.getElementById('bill-result-panel');
+        
+        if(!query) {
+            panel.innerHTML = '<div class="no-data-msg" style="color:red;">Please specify an Invoice Number!</div>';
+            return;
+        }
+
+        panel.innerHTML = '<div class="no-data-msg">Searching Cloud Database...</div>';
+        
+        const safeInvKey = query.replace(/\//g, "-");
+
+        database.ref('bills/' + safeInvKey).once('value').then((snapshot) => {
+            let item = snapshot.val();
+
+            if (!item) {
+                const localData = localStorage.getItem('BILL_' + query);
+                if (localData) item = JSON.parse(localData);
+            }
+
+            if(!item) {
+                panel.innerHTML = '<div class="no-data-msg" style="color:#dc2626;">❌ No Registered Invoice Found for Reference: ' + query + '</div>';
+                return;
+            }
+
+            panel.innerHTML = `
+                <div id="print-search-bill-area">
+                    <div class="bill-header">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <tr>
+                                <td>
+                                    <div class="bill-title-main">SRMB AMIGO</div>
+                                    <div class="bill-subtitle">Authorized Mobile Sale & Service Center</div>
+                                    <div style="font-size: 12px; color: #444; margin-top: 5px;">
+                                        Main Road, Dalimpur, Falakata, Alipurduar, WB, 735211<br>
+                                        <b>GSTIN:</b> 19DBAPB7017Q1ZE | <b>Mob:</b> +91 9932833018, +91 8250965959
+                                    </div>
+                                </td>
+                                <td class="bill-header-right" style="width: 40%; vertical-align: top;">
+                                    <div style="font-size: 20px; font-weight: bold; color: var(--bill-primary); margin-bottom: 8px;">TAX INVOICE</div>
+                                    <div style="font-size: 14px; font-weight: bold; margin-bottom: 5px;">Invoice No: <span class="preview-text" style="display:inline-block; border:none; min-width:80px; text-align:right;">${item.invNo}</span></div>
+                                    <div style="font-size: 14px; font-weight: bold;">Date: <span class="preview-text" style="display:inline-block; border:none; min-width:80px; text-align:right;">${item.date}</span></div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="bill-sect-title">Customer Details</div>
+                    <table class="fields-table" style="margin-bottom: 15px;">
+                        <tr>
+                            <td>
+                                <div class="info-group">
+                                    <span class="preview-label-bill">Customer Name</span>
+                                    <span class="preview-text">${item.custName}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="info-group">
+                                    <span class="preview-label-bill">Mobile Number</span>
+                                    <span class="preview-text">${item.custMob}</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <div class="info-group">
+                                    <span class="preview-label-bill">Customer Address</span>
+                                    <span class="preview-text">${item.custAddr || 'N/A'}</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <div class="bill-sect-title">Product Details</div>
+                    <table class="bill-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 40%;">Description of Goods (Brand & Model)</th>
+                                <th style="width: 25%;">IMEI / Serial No.</th>
+                                <th style="width: 10%;">QTY</th>
+                                <th style="width: 25%;">Rate (INR, Incl. GST)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="preview-text" style="border:none;">${item.prodDesc}</span></td>
+                                <td><span class="preview-text" style="border:none;">${item.prodImei}</span></td>
+                                <td style="text-align: center;"><span class="preview-text" style="border:none; text-align:center;">${item.qty}</span></td>
+                                <td style="text-align: right;"><span class="preview-text" style="border:none; text-align:right; font-weight:bold;">₹ ${item.rateIncl}</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="terms-box">
+                        <b>Terms & Conditions:</b><br>
+                        1. Goods once sold will not be taken back or exchanged.<br>
+                        2. Warranty claims must be made directly to the respective brand service center.<br>
+                        3. This is a computer-generated tax invoice.
+                    </div>
+
+                    <table class="summary-box">
+                        <tr>
+                            <td>Taxable Value (Excl. GST)</td>
+                            <td style="text-align: right; font-weight:bold;">₹ ${item.taxable}</td>
+                        </tr>
+                        <tr>
+                            <td>CGST (9%)</td>
+                            <td style="text-align: right;">₹ ${item.cgst}</td>
+                        </tr>
+                        <tr>
+                            <td>SGST (9%)</td>
+                            <td style="text-align: right;">₹ ${item.sgst}</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td>Total Amount (Incl. GST)</td>
+                            <td style="text-align: right; font-weight: bold; color:#b5332a;">₹ ${item.grandTotal}</td>
+                        </tr>
+                    </table>
+                    <div class="clear-fix"></div>
+                </div>
+                
+                <div class="btn-container" style="margin-top:15px;">
+                    <button type="button" class="action-btn btn-pdf" onclick="downloadSearchedPDF('print-search-bill-area', 'Invoice_${item.invNo.replace(/\//g, "-")}')">Save PDF</button>
+                    <button type="button" class="action-btn btn-print" onclick="window.print()">Print Invoice</button>
+                </div>
+            `;
+        });
+    }
+
+    // ডাউনলোড ইঞ্জিন
+    function downloadSearchedPDF(elementId, fileNamingPattern) {
+        const element = document.getElementById(elementId);
+        const opt = {
+            margin:       [10, 12, 10, 12],
+            filename:     `${fileNamingPattern}.pdf`,
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2, useCORS: true },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+        html2pdf().set(opt).from(element).save();
+    }
+
+    function downloadPassbookPDF() {
+        const element = document.getElementById('passbook-content');
+        const holderName = document.getElementById('holder-name').value.trim() || 'Customer';
+        const filename = `IndusInd_Passbook_${holderName.replace(/\s+/g, '_')}.pdf`;
+
+        const opt = {
+            margin:       [10, 12, 10, 12],
+            filename:     filename,
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2, useCORS: true },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+        html2pdf().set(opt).from(element).save();
+        
+        setTimeout(() => {
+            document.getElementById('passbook-form').reset();
+            document.getElementById('current-date').value = formattedDate;
+            document.getElementById('passbook-action-group').style.display = "none";
+        }, 1000);
+    }
+
+    function downloadBillPDF() {
+        const element = document.getElementById('bill-content');
+        const custName = document.getElementById('bill-cust-name').value.trim() || 'Customer';
+        const filename = `GST_Invoice_${custName.replace(/\s+/g, '_')}.pdf`;
+
+        const opt = {
+            margin:       [10, 12, 10, 12],
+            filename:     filename,
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2, useCORS: true },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+        html2pdf().set(opt).from(element).save();
+
+        setTimeout(() => {
+            document.getElementById('bill-form').reset();
+            document.getElementById('bill-date').value = formattedDate;
+            document.getElementById('bill-action-group').style.display = "none";
+            fetchNextInvoiceNumber();
+        }, 1000);
+    }
+</script>
+
+</body>
+</html>
