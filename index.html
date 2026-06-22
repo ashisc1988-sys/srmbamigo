@@ -8,6 +8,7 @@
     
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
 
     <style>
         :root {
@@ -117,6 +118,51 @@
             border-bottom: 2px solid #ddd;
             padding-bottom: 15px;
         }
+
+        /* Scanner Popup Style */
+.scanner-container {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+    z-index: 10000;
+    width: 90%;
+    max-width: 400px;
+}
+.scanner-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 9999;
+}
+.btn-scan {
+    background: var(--bill-primary);
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    margin-top: 4px;
+}
+.btn-scan-close {
+    background: #dc2626;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    width: 100%;
+    margin-top: 10px;
+    font-weight: bold;
+    cursor: pointer;
+}
 
         .dashboard-grid {
             display: grid;
@@ -487,6 +533,7 @@
                             </td>
                             <td>
                                 <input type="text" id="bill-prod-imei" class="uppercase-field" placeholder="Enter 15-digit IMEI" required>
+                                <button type="button" class="btn-scan" onclick="startScanner()">📷 Scan IMEI</button>
                             </td>
                             <td>
                                 <input type="number" id="bill-qty" value="1" min="1" oninput="calculateBillTotalFromInclusive()" style="text-align: center;">
@@ -497,6 +544,15 @@
                         </tr>
                     </tbody>
                 </table>
+                
+                
+                <div id="scanner-overlay" class="scanner-overlay"></div>
+<div id="scanner-modal" class="scanner-container">
+    <h4 style="margin-top:0; color:var(--bill-primary);">Scan Product Barcode/IMEI</h4>
+    <div id="interactive-reader" style="width: 100%;"></div>
+    <button type="button" class="btn-scan-close" onclick="stopScanner()">Cancel / Close</button>
+</div>
+
 
                 <div class="terms-box">
                     <b>Terms & Conditions:</b><br>
@@ -1102,6 +1158,63 @@
             fetchNextInvoiceNumber();
         }, 1000);
     }
+    
+function startScanner() {
+    // পপআপ এবং ওভারলে ওপেন করা
+    document.getElementById('scanner-overlay').style.display = 'block';
+    document.getElementById('scanner-modal').style.display = 'block';
+
+    // আগের কোনো ক্যামেরা ইনস্ট্যান্স খোলা থাকলে তা ক্লিয়ার করা
+    if (html5QrCode) {
+        try { html5QrCode.clear(); } catch(e) { console.log(e); }
+    }
+
+    html5QrCode = new Html5Qrcode("interactive-reader");
+    const config = { fps: 15, qrbox: { width: 250, height: 150 } };
+
+    html5QrCode.start({ facingMode: "environment" }, config, 
+        (decodedText) => {
+            document.getElementById('bill-prod-imei').value = decodedText.trim().toUpperCase();
+            forceCloseScanner(); // সফল হলে বন্ধ হবে
+        }, 
+        (errorMessage) => {
+            // স্ক্যান করার সময় প্রতি ফ্রেমের এরর ইগনোর করা হবে
+        }
+    ).catch((err) => {
+        console.error("Camera access failed: ", err);
+        alert("ক্যামেরা অন করা যায়নি। দয়া করে পারমিশন চেক করুন বা লাইভ লিঙ্ক (HTTPS) ব্যবহার করুন।");
+        forceCloseScanner(); // এরর হলেও যাতে উইন্ডো বন্ধ হয়ে যায়
+    });
+}
+
+function stopScanner() {
+    if (html5QrCode && html5QrCode.isScanning) {
+        html5QrCode.stop().then(() => {
+            forceCloseScanner();
+        }).catch((err) => {
+            console.error("Stop failed: ", err);
+            forceCloseScanner();
+        });
+    } else {
+        forceCloseScanner();
+    }
+}
+
+// এই নতুন ফাংশনটি নিশ্চিত করবে যে বাটন চাপলে বা এরর হলে পপআপ বন্ধ হবেই হবে
+function forceCloseScanner() {
+    document.getElementById('scanner-overlay').style.display = 'none';
+    document.getElementById('scanner-modal').style.display = 'none';
+    if (html5QrCode) {
+        try {
+            html5QrCode.clear();
+        } catch (e) {
+            console.log("Clear failed: ", e);
+        }
+    }
+}
+
+
+    
 </script>
 
 </body>
