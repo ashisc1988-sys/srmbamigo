@@ -550,7 +550,7 @@
 <div id="scanner-modal" class="scanner-container">
     <h4 style="margin-top:0; color:var(--bill-primary);">Scan Product Barcode/IMEI</h4>
     <div id="interactive-reader" style="width: 100%;"></div>
-    <button type="button" class="btn-scan-close" onclick="stopScanner()">Cancel / Close</button>
+ <button type="button" class="btn-scan-close" onclick="document.getElementById('scanner-overlay').style.display='none'; document.getElementById('scanner-modal').style.display='none'; if(html5QrCode){ try{html5QrCode.clear();}catch(e){} }">Cancel / Close</button>
 </div>
 
 
@@ -1159,33 +1159,49 @@
         }, 1000);
     }
     
+let html5QrCode = null;
+
 function startScanner() {
     // পপআপ এবং ওভারলে ওপেন করা
     document.getElementById('scanner-overlay').style.display = 'block';
     document.getElementById('scanner-modal').style.display = 'block';
 
-    // আগের কোনো ক্যামেরা ইনস্ট্যান্স খোলা থাকলে তা ক্লিয়ার করা
+    // ১. আগের কোনো সেশন ব্যাকগ্রাউন্ডে আটকে থাকলে তা জোরপূর্বক ক্লিয়ার করা
     if (html5QrCode) {
-        try { html5QrCode.clear(); } catch(e) { console.log(e); }
+        try {
+            html5QrCode.clear();
+        } catch(e) {
+            console.log("Clear background instance:", e);
+        }
     }
 
+    // ২. নতুন করে ফ্রেশ স্ক্যানার অবজেক্ট তৈরি
     html5QrCode = new Html5Qrcode("interactive-reader");
     const config = { fps: 15, qrbox: { width: 250, height: 150 } };
 
+    // ৩. ক্যামেরা চালু করা
     html5QrCode.start({ facingMode: "environment" }, config, 
         (decodedText) => {
+            // সফলভাবে স্ক্যান হলে টেক্সট বক্সে ডাটা বসবে
             document.getElementById('bill-prod-imei').value = decodedText.trim().toUpperCase();
-            forceCloseScanner(); // সফল হলে বন্ধ হবে
+            
+            // এবং পপআপ বন্ধ হয়ে ক্যামেরা রিলিজ হবে
+            document.getElementById('scanner-overlay').style.display = 'none';
+            document.getElementById('scanner-modal').style.display = 'none';
+            try { html5QrCode.clear(); } catch(e){}
         }, 
         (errorMessage) => {
             // স্ক্যান করার সময় প্রতি ফ্রেমের এরর ইগনোর করা হবে
         }
     ).catch((err) => {
         console.error("Camera access failed: ", err);
-        alert("ক্যামেরা অন করা যায়নি। দয়া করে পারমিশন চেক করুন বা লাইভ লিঙ্ক (HTTPS) ব্যবহার করুন।");
-        forceCloseScanner(); // এরর হলেও যাতে উইন্ডো বন্ধ হয়ে যায়
+        // যদি লোকাল ফাইল ওপেন থাকে বা পারমিশন না পায়
+        alert("ক্যামেরা অন করা যায়নি। দয়া করে নিশ্চিত করুন সাইটটি Netlify লাইভ লিঙ্কে (HTTPS) ওপেন করা আছে এবং ব্রাউজারে ক্যামেরার পারমিশন দেওয়া আছে।");
+        document.getElementById('scanner-overlay').style.display = 'none';
+        document.getElementById('scanner-modal').style.display = 'none';
     });
 }
+
 
 function stopScanner() {
     if (html5QrCode && html5QrCode.isScanning) {
