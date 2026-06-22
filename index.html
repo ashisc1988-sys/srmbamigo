@@ -25,22 +25,24 @@
             background-color: #f5f5f5;
             margin: 0;
             padding: 20px;
-            min-width: 1024px; 
+            
         }
 
 /* --- Login Page Styles (Centered) --- */
 .login-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh; /* পুরো স্ক্রিন জুড়ে সেন্টার করবে */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: #f5f5f5;
-    z-index: 99999; /* যাতে সবকিছুর উপরে ভেসে থাকে */
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background-color: #f5f5f5 !important;
+    z-index: 999999 !important;
+    box-sizing: border-box !important;
 }
+
 
         .login-container {
             background: #fff;
@@ -51,6 +53,7 @@
             max-width: 400px;
             text-align: center;
             border-top: 5px solid var(--bill-primary);
+            margin: auto !important;
         }
         .login-container h2 {
             margin-bottom: 25px;
