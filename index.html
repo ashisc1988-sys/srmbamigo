@@ -28,13 +28,20 @@
             min-width: 1024px; 
         }
 
-        /* --- Login Page Styles --- */
-        .login-wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 80vh;
-        }
+/* --- Login Page Styles (Centered) --- */
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* পুরো স্ক্রিন জুড়ে সেন্টার করবে */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #f5f5f5;
+    z-index: 99999; /* যাতে সবকিছুর উপরে ভেসে থাকে */
+}
+
         .login-container {
             background: #fff;
             padding: 35px;
@@ -337,6 +344,11 @@
 </div>
 
 <div id="dashboard-view" class="dashboard-container app-section">
+    <!-- লগআউট বাটনটি উপরে ডানদিকের কোণায় সুন্দর দেখাবে -->
+    <div style="text-align: right; margin-bottom: -20px;">
+        <button onclick="handleLogout()" style="background-color: #dc2626; color: white; border: none; padding: 6px 12px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 13px;">🚪 Logout</button>
+    </div>
+    
     <div class="dashboard-title"><b>SRMB AMIGO</b> Management Desk</div>
     <div class="dashboard-grid">
         <button class="dash-btn btn-passbook-menu" onclick="switchSection('passbook-section')">📁 <br>Create Passbook</button>
@@ -345,6 +357,7 @@
         <button class="dash-btn btn-search-bill-menu" onclick="switchSection('search-bill-section')">🔍 <br>Search Invoices</button>
     </div>
 </div>
+
 
 <div id="passbook-section" class="app-section">
     <div class="container">
@@ -677,6 +690,30 @@
             errMsg.style.display = "block";
         }
     }
+    
+    
+    function handleLogout() {
+    if (confirm("Are you sure you want to logout?")) {
+        // সেশন থেকে লগইন ডাটা মুছে ফেলা
+        sessionStorage.removeItem('isLoggedIn');
+        
+        // ড্যাশবোর্ড বা অন্য সেকশন লুকিয়ে ফেলা
+        document.getElementById('dashboard-view').classList.remove('active-section');
+        document.getElementById('dashboard-view').classList.add('hidden-section');
+        
+        const sections = ['passbook-section', 'bill-section', 'search-passbook-section', 'search-bill-section'];
+        sections.forEach(id => document.getElementById(id).classList.remove('active-section'));
+        
+        // লগইন স্ক্রিন ফিরিয়ে আনা
+        document.getElementById('login-view').classList.remove('hidden-section');
+        document.getElementById('login-view').classList.add('active-section');
+        
+        // ফর্মগুলো রিসেট করে দেওয়া সিকিউরিটির জন্য
+        document.getElementById('login-userid').value = "";
+        document.getElementById('login-password').value = "";
+    }
+}
+
 
     // পেজ লোড হওয়ার সময় সেশন চেক করা
     window.onload = function() {
