@@ -25,24 +25,22 @@
             background-color: #f5f5f5;
             margin: 0;
             padding: 20px;
-            
         }
 
-/* --- Login Page Styles (Centered) --- */
-.login-wrapper {
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    background-color: #f5f5f5 !important;
-    z-index: 999999 !important;
-    box-sizing: border-box !important;
-}
-
+        /* --- Login Page Styles (Centered) --- */
+        .login-wrapper {
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            background-color: #f5f5f5 !important;
+            z-index: 999999 !important;
+            box-sizing: border-box !important;
+        }
 
         .login-container {
             background: #fff;
@@ -109,103 +107,233 @@
             display: none;
         }
 
-        /* Dashboard Styles */
+        /* --- Modern Dashboard View Upgrade (Enhanced Layout) --- */
         .dashboard-container {
-            max-width: 700px;
-            margin: 50px auto;
-            background: #fff;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            text-align: center;
+            max-width: 850px;
+            margin: 40px auto;
+            /* একটি হালকা ও প্রিমিয়াম গ্রেডিয়েন্ট ব্যাকগ্রাউন্ড */
+            background: linear-gradient(145deg, #ffffff, #f1f5f9); 
+            padding: 35px;
+            border-radius: 20px;
+            /* ড্যাশবোর্ডের চারধারে একটি হালকা গ্লোয়িং বর্ডার */
+            border: 1px solid rgba(30, 58, 138, 0.08); 
+            /* আরও গভীর এবং প্রিমিয়াম শ্যাডো ইফেক্ট */
+            box-shadow: 0 15px 35px rgba(30, 58, 138, 0.06), 0 5px 15px rgba(0, 0, 0, 0.02);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* ড্যাশবোর্ডের ভেতরে একটি হালকা ব্যাকগ্রাউন্ড ওয়াটারমার্ক বা শেপ যোগ করার জন্য (ঐচ্ছিক) */
+        .dashboard-container::before {
+            content: "";
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(30, 90, 240, 0.04) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .dashboard-title-group {
+            text-align: left;
         }
 
         .dashboard-title {
-            color: #333;
-            font-size: 28px;
-            margin-bottom: 30px;
-            font-weight: bold;
-            border-bottom: 2px solid #ddd;
-            padding-bottom: 15px;
+            color: #1e293b;
+            font-size: 26px;
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: 0.5px;
         }
 
-        /* Scanner Popup Style */
-.scanner-container {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: white;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 5px 25px rgba(0,0,0,0.3);
-    z-index: 10000;
-    width: 90%;
-    max-width: 400px;
-}
-.scanner-overlay {
-    display: none;
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.5);
-    z-index: 9999;
-}
-.btn-scan {
-    background: var(--bill-primary);
-    color: white;
-    border: none;
-    padding: 6px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 12px;
-    font-weight: bold;
-    margin-top: 4px;
-}
-.btn-scan-close {
-    background: #dc2626;
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 4px;
-    width: 100%;
-    margin-top: 10px;
-    font-weight: bold;
-    cursor: pointer;
-}
+        .dashboard-subtitle {
+            color: #64748b;
+            font-size: 14px;
+            margin-top: 4px;
+        }
 
         .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            margin-top: 20px;
+            gap: 24px;
+            margin-top: 10px;
         }
 
         .dash-btn {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             align-items: center;
-            justify-content: center;
-            height: 120px;
-            padding: 20px;
-            font-size: 18px;
-            font-weight: bold;
-            color: white;
-            border: none;
+            justify-content: flex-start;
+            height: auto;
+            padding: 24px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #1e293b;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
             border-radius: 12px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            text-align: center;
-            gap: 10px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            text-align: left;
+            gap: 20px;
+        }
+        
+        /* --- Signature Block Styles --- */
+.signature-container {
+    float: right;
+    width: 250px;
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 10px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.signature-container p {
+    margin: 0;
+    font-size: 13px;
+    color: #333;
+}
+
+.sig-space {
+    height: 60px; /* সই এবং স্ট্যাম্প দেওয়ার ফাঁকা জায়গা */
+    border-bottom: 1px dashed #94a3b8; /* সই করার জন্য একটি হালকা ড্যাশড লাইন */
+    margin-bottom: 5px;
+}
+
+.sig-text {
+    font-size: 11px !important;
+    color: #64748b;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* প্রিন্ট মিডিয়াতেও যাতে সিগনেচার ঠিকঠাক দেখায় */
+@media print {
+    .signature-container {
+        margin-top: 50px !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    .sig-space {
+        border-bottom: 1px dashed #000 !important;
+    }
+}
+
+
+
+        .dash-icon-box {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            flex-shrink: 0;
         }
 
-        .btn-passbook-menu { background-color: var(--primary-color); }
-        .btn-bill-menu { background-color: var(--bill-primary); }
-        .btn-search-passbook-menu { background-color: #0f766e; }
-        .btn-search-bill-menu { background-color: #1e40af; }
+        .bg-passbook { background: linear-gradient(135deg, #800020, #a31d3d); }
+        .bg-bill { background: linear-gradient(135deg, #1e3a8a, #3b82f6); }
+        .bg-search-pb { background: linear-gradient(135deg, #0f766e, #14b8a6); }
+        .bg-search-bill { background: linear-gradient(135deg, #1e40af, #1d4ed8); }
+
+        .dash-btn-text {
+            display: flex;
+            flex-direction: column;
+        }
+        .dash-btn-desc {
+            font-size: 12px;
+            color: #64748b;
+            font-weight: 400;
+            margin-top: 2px;
+        }
+
+        .dash-btn:hover {
+            transform: translateY(-4px);
+            border-color: transparent;
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.08);
+            background: #f8fafc;
+        }
+
+        .dash-btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Scanner Popup Style */
+        .scanner-container {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+            z-index: 10000;
+            width: 90%;
+            max-width: 400px;
+        }
+        .scanner-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 9999;
+        }
         
-        .dash-btn:hover { transform: translateY(-4px); opacity: 0.95; box-shadow: 0 8px 16px rgba(0,0,0,0.2); }
+        /* New Compact Scanner Button inline styling */
+        .imei-container {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            width: 100%;
+        }
+        .btn-scan {
+            background: var(--bill-primary);
+            color: white;
+            border: none;
+            height: 36px;
+            width: 40px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            padding: 0;
+            transition: opacity 0.2s;
+        }
+        .btn-scan:hover {
+            opacity: 0.9;
+        }
+        
+        .btn-scan-close {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            width: 100%;
+            margin-top: 10px;
+            font-weight: bold;
+            cursor: pointer;
+        }
 
         .btn-back {
             background-color: #6c757d;
@@ -232,6 +360,7 @@
             padding: 25px;
             border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-sizing: border-box;
         }
 
         /* --- Passbook Styles --- */
@@ -270,7 +399,6 @@
         .btn-print { background-color: #007bff; color: white; }
         button.action-btn:hover { opacity: 0.9; }
 
-        /* সেভ করার আগে বাটন হাইড রাখার জন্য বিশেষ ক্লাস */
         .post-save-actions { display: none; }
 
         /* --- GST Tax Invoice Styles --- */
@@ -308,21 +436,104 @@
         .preview-label { font-size: 13px; font-weight: bold; color: var(--primary-color); margin-bottom: 2px; display: block;}
         .preview-label-bill { font-size: 13px; font-weight: bold; color: var(--bill-primary); margin-bottom: 2px; display: block;}
 
-        /* --- PRINT / PDF STYLING --- */
+        /* --- PROFESSIONAL TAX INVOICE PRINT UPGRADE --- */
+        #bill-content, #print-search-bill-area {
+            background: #ffffff !important;
+            box-sizing: border-box !important;
+        }
+
+        #bill-content .bill-header, #print-search-bill-area .bill-header {
+            border-bottom: 3px double var(--bill-primary) !important;
+            padding-bottom: 15px !important;
+            margin-bottom: 20px !important;
+        }
+
+        #bill-content .bill-title-main, #print-search-bill-area .bill-title-main {
+            font-size: 36px !important;
+            font-weight: 800 !important;
+            color: var(--bill-primary) !important;
+            text-shadow: 1px 1px 0px rgba(0,0,0,0.1);
+        }
+
+        #bill-content .bill-sect-title, #print-search-bill-area .bill-sect-title {
+            background-color: var(--bill-primary) !important;
+            color: white !important;
+            padding: 6px 12px !important;
+            font-size: 13px !important;
+            font-weight: bold !important;
+            letter-spacing: 0.5px !important;
+            border-radius: 0px !important;
+            margin: 20px 0 10px 0 !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
+        #bill-content .bill-table, #print-search-bill-area .bill-table {
+            width: 100% !important;
+            border-collapse: collapse !important;
+            margin: 15px 0 !important;
+        }
+
+        #bill-content .bill-table th, #print-search-bill-area .bill-table th {
+            background-color: #f1f5f9 !important;
+            color: #1e293b !important;
+            font-weight: 700 !important;
+            text-transform: uppercase !important;
+            font-size: 12px !important;
+            border: 1px solid #94a3b8 !important;
+            padding: 10px !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
+        #bill-content .bill-table td, #print-search-bill-area .bill-table td {
+            border: 1px solid #94a3b8 !important;
+            padding: 10px !important;
+            font-size: 13px !important;
+        }
+
+        #bill-content .summary-box, #print-search-bill-area .summary-box {
+            border: 1px solid #94a3b8 !important;
+            margin-top: 25px !important;
+            background: #fafafa !important;
+        }
+
+        #bill-content .summary-box td, #print-search-bill-area .summary-box td {
+            border: 1px solid #94a3b8 !important;
+            padding: 9px 12px !important;
+            font-size: 13px !important;
+        }
+
+        #bill-content .summary-box tr.total-row, #print-search-bill-area .summary-box tr.total-row {
+            background-color: #e2e8f0 !important;
+            font-size: 14px !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
+        /* --- PRINT / PDF STYLING (FIXED CORNER CLIPPING) --- */
         @media print {
-            body { background: none; padding: 0; min-width: auto; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            .container { box-shadow: none; padding: 0; max-width: 100%; }
+            body { background: none; padding: 0; margin: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .container { box-shadow: none; padding: 0; max-width: 100% !important; width: 100% !important; margin: 0 !important; }
+            #passbook-content, #bill-content, #print-search-pb-area, #print-search-bill-area { width: 100% !important; box-sizing: border-box !important; }
             button, .btn-container, .btn-back, #dashboard-view, .search-control-panel, .btn-search-trigger, .login-wrapper { display: none !important; }
             .search-wrapper { display: block !important; }
             .search-display-panel { width: 100% !important; border: none !important; padding: 0 !important; }
             input, textarea, select { border: none !important; background: transparent !important; padding: 0 !important; font-size: 14px !important; color: #000 !important; -webkit-appearance: none; appearance: none; }
             .info-group label::after { content: "" !important; }
             .account-info { background: #fdfafb !important; border: 1px solid #b5332a; }
-            .bill-sect-title { background-color: #f0f4f8 !important; }
-            .bill-table th { background-color: #1e3a8a !important; color: #fff !important; }
+            
+            /* Enhanced print structures */
+            #bill-content .bill-sect-title, #print-search-bill-area .bill-sect-title { background-color: var(--bill-primary) !important; color: #fff !important; }
+            #bill-content .bill-table th, #print-search-bill-area .bill-table th { background-color: #f1f5f9 !important; color: #000 !important; border: 1px solid #000 !important; }
+            #bill-content .bill-table td, #print-search-bill-area .bill-table td { border: 1px solid #000 !important; }
+            #bill-content .summary-box, #print-search-bill-area .summary-box { border: 1px solid #000 !important; }
+            #bill-content .summary-box td, #print-search-bill-area .summary-box td { border: 1px solid #000 !important; }
+            
             .calculated-field { background-color: transparent !important; }
             .preview-text { border-bottom: none !important; }
-            @page { size: A4; margin: 10mm 12mm; }
+            @page { size: A4; margin: 8mm 10mm 8mm 10mm; }
+            .btn-scan { display: none !important; }
         }
     </style>
 </head>
@@ -347,17 +558,48 @@
 </div>
 
 <div id="dashboard-view" class="dashboard-container app-section">
-    <!-- লগআউট বাটনটি উপরে ডানদিকের কোণায় সুন্দর দেখাবে -->
-    <div style="text-align: right; margin-bottom: -20px;">
-        <button onclick="handleLogout()" style="background-color: #dc2626; color: white; border: none; padding: 6px 12px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 13px;">🚪 Logout</button>
+    <div class="dashboard-header">
+        <div class="dashboard-title-group">
+            <h1 class="dashboard-title">SRMB AMIGO</h1>
+            <div class="dashboard-subtitle">Business Management Desk & Control Panel</div>
+        </div>
+        <div>
+            <button onclick="handleLogout()" style="background-color: #ef4444; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 13px; transition: 0.2s; box-shadow: 0 2px 4px rgba(239,68,68,0.2);">🚪 Logout</button>
+        </div>
     </div>
     
-    <div class="dashboard-title"><b>SRMB AMIGO</b> Management Desk</div>
     <div class="dashboard-grid">
-        <button class="dash-btn btn-passbook-menu" onclick="switchSection('passbook-section')">📁 <br>Create Passbook</button>
-        <button class="dash-btn btn-bill-menu" onclick="switchSection('bill-section')">🧾 <br>Create GST Retail Bill</button>
-        <button class="dash-btn btn-search-passbook-menu" onclick="switchSection('search-passbook-section')">🔍 <br>Search Passbook</button>
-        <button class="dash-btn btn-search-bill-menu" onclick="switchSection('search-bill-section')">🔍 <br>Search Invoices</button>
+        <button class="dash-btn" onclick="switchSection('passbook-section')">
+            <div class="dash-icon-box bg-passbook">📁</div>
+            <div class="dash-btn-text">
+                <span>Create Passbook</span>
+                <span class="dash-btn-desc">Issue new IndusInd bank passbook registry</span>
+            </div>
+        </button>
+
+        <button class="dash-btn" onclick="switchSection('bill-section')">
+            <div class="dash-icon-box bg-bill">🧾</div>
+            <div class="dash-btn-text">
+                <span>Create GST Retail Bill</span>
+                <span class="dash-btn-desc">Generate tax invoice for mobile sales</span>
+            </div>
+        </button>
+
+        <button class="dash-btn" onclick="switchSection('search-passbook-section')">
+            <div class="dash-icon-box bg-search-pb">🔍</div>
+            <div class="dash-btn-text">
+                <span>Search Passbook</span>
+                <span class="dash-btn-desc">Find and retrieve customer bank registry</span>
+            </div>
+        </button>
+
+        <button class="dash-btn" onclick="switchSection('search-bill-section')">
+            <div class="dash-icon-box bg-search-bill">🔎</div>
+            <div class="dash-btn-text">
+                <span>Search Invoices</span>
+                <span class="dash-btn-desc">Track and view billing logs from cloud</span>
+            </div>
+        </button>
     </div>
 </div>
 
@@ -548,8 +790,10 @@
                                 <input type="text" id="bill-prod-desc" class="uppercase-field" placeholder="e.g. SAMSUNG GALAXY M34 5G" required>
                             </td>
                             <td>
-                                <input type="text" id="bill-prod-imei" class="uppercase-field" placeholder="Enter 15-digit IMEI" required>
-                                <button type="button" class="btn-scan" onclick="startScanner()">📷 Scan IMEI</button>
+                                <div class="imei-container">
+                                    <input type="text" id="bill-prod-imei" class="uppercase-field" placeholder="Enter 15-digit IMEI" required style="margin: 0;">
+                                    <button type="button" class="btn-scan" onclick="startScanner()" title="Scan IMEI">📷</button>
+                                </div>
                             </td>
                             <td>
                                 <input type="number" id="bill-qty" value="1" min="1" oninput="calculateBillTotalFromInclusive()" style="text-align: center;">
@@ -561,14 +805,12 @@
                     </tbody>
                 </table>
                 
-                
                 <div id="scanner-overlay" class="scanner-overlay"></div>
-<div id="scanner-modal" class="scanner-container">
-    <h4 style="margin-top:0; color:var(--bill-primary);">Scan Product Barcode/IMEI</h4>
-    <div id="interactive-reader" style="width: 100%;"></div>
- <button type="button" class="btn-scan-close" onclick="document.getElementById('scanner-overlay').style.display='none'; document.getElementById('scanner-modal').style.display='none'; if(html5QrCode){ try{html5QrCode.clear();}catch(e){} }">Cancel / Close</button>
-</div>
-
+                <div id="scanner-modal" class="scanner-container">
+                    <h4 style="margin-top:0; color:var(--bill-primary);">Scan Product Barcode/IMEI</h4>
+                    <div id="interactive-reader" style="width: 100%;"></div>
+                    <button type="button" class="btn-scan-close" onclick="document.getElementById('scanner-overlay').style.display='none'; document.getElementById('scanner-modal').style.display='none'; if(html5QrCode){ try{html5QrCode.clear();}catch(e){} }">Cancel / Close</button>
+                </div>
 
                 <div class="terms-box">
                     <b>Terms & Conditions:</b><br>
@@ -694,31 +936,24 @@
         }
     }
     
-    
     function handleLogout() {
-    if (confirm("Are you sure you want to logout?")) {
-        // সেশন থেকে লগইন ডাটা মুছে ফেলা
-        sessionStorage.removeItem('isLoggedIn');
-        
-        // ড্যাশবোর্ড বা অন্য সেকশন লুকিয়ে ফেলা
-        document.getElementById('dashboard-view').classList.remove('active-section');
-        document.getElementById('dashboard-view').classList.add('hidden-section');
-        
-        const sections = ['passbook-section', 'bill-section', 'search-passbook-section', 'search-bill-section'];
-        sections.forEach(id => document.getElementById(id).classList.remove('active-section'));
-        
-        // লগইন স্ক্রিন ফিরিয়ে আনা
-        document.getElementById('login-view').classList.remove('hidden-section');
-        document.getElementById('login-view').classList.add('active-section');
-        
-        // ফর্মগুলো রিসেট করে দেওয়া সিকিউরিটির জন্য
-        document.getElementById('login-userid').value = "";
-        document.getElementById('login-password').value = "";
+        if (confirm("Are you sure you want to logout?")) {
+            sessionStorage.removeItem('isLoggedIn');
+            
+            document.getElementById('dashboard-view').classList.remove('active-section');
+            document.getElementById('dashboard-view').classList.add('hidden-section');
+            
+            const sections = ['passbook-section', 'bill-section', 'search-passbook-section', 'search-bill-section'];
+            sections.forEach(id => document.getElementById(id).classList.remove('active-section'));
+            
+            document.getElementById('login-view').classList.remove('hidden-section');
+            document.getElementById('login-view').classList.add('active-section');
+            
+            document.getElementById('login-userid').value = "";
+            document.getElementById('login-password').value = "";
+        }
     }
-}
 
-
-    // পেজ লোড হওয়ার সময় সেশন চেক করা
     window.onload = function() {
         if (sessionStorage.getItem('isLoggedIn') === 'true') {
             document.getElementById('login-view').className = 'login-wrapper hidden-section';
@@ -726,7 +961,6 @@
         }
     };
 
-    // লেআউট নেভিগেশন কন্ট্রোল
     function switchSection(sectionId) {
         if(sessionStorage.getItem('isLoggedIn') !== 'true') return;
         document.getElementById('dashboard-view').classList.remove('active-section');
@@ -753,7 +987,6 @@
         document.getElementById('dashboard-view').classList.add('active-section');
     }
 
-    // --- সরাসরি ফায়ারবেস থেকে ইনভয়েস নম্বর জেনারেটর ---
     function fetchNextInvoiceNumber() {
         const invInput = document.getElementById('bill-inv-no');
         invInput.value = "Loading..."; 
@@ -779,7 +1012,6 @@
         });
     }
 
-    // ম্যাথমেটিক্যাল ক্যালকুলেশন (GST Inclusive)
     function calculateBillTotalFromInclusive() {
         const qty = parseFloat(document.getElementById('bill-qty').value) || 0;
         const totalInclRate = parseFloat(document.getElementById('bill-rate-inclusive').value) || 0;
@@ -796,7 +1028,6 @@
         document.getElementById('grand-total').value = grandTotal.toFixed(2);
     }
 
-    // ফায়ারবেসে পাসবুক ডাটা সেভ করা
     function savePassbookData(e) {
         e.preventDefault();
         const accNo = document.getElementById('p-acc-no').value.trim();
@@ -826,7 +1057,6 @@
         });
     }
 
-    // ফায়ারবেসে ইনভয়েস ডাটা সেভ করা
     function saveBillData(e) {
         e.preventDefault();
         const invInput = document.getElementById('bill-inv-no');
@@ -877,7 +1107,6 @@
         });
     }
 
-    // পাসবুক সার্চ
     function executePassbookSearch() {
         const query = document.getElementById('search-p-acc').value.trim();
         const panel = document.getElementById('passbook-result-panel');
@@ -983,6 +1212,7 @@
                                             </div>
                                         </td>
                                     </tr>
+                                end balance-note-container
                                 </table>
                                 
                                 <div class="balance-note-container">
@@ -1012,7 +1242,6 @@
         });
     }
 
-    // বিল সার্চ 
     function executeBillSearch() {
         let query = document.getElementById('search-b-inv').value.trim().toUpperCase();
         const panel = document.getElementById('bill-result-panel');
@@ -1133,6 +1362,17 @@
                         </tr>
                     </table>
                     <div class="clear-fix"></div>
+                    <!-- Signature Block Starts -->
+<div class="signature-container">
+    <p>For <b>SRMB AMIGO</b></p>
+    <div class="sig-space"></div>
+    <p class="sig-text">Authorized Signatory / Stamp</p>
+</div>
+<div class="clear-fix"></div>
+<!-- Signature Block Ends -->
+
+                    
+                    
                 </div>
                 
                 <div class="btn-container" style="margin-top:15px;">
@@ -1143,7 +1383,6 @@
         });
     }
 
-    // ডাউনলোড ইঞ্জিন
     function downloadSearchedPDF(elementId, fileNamingPattern) {
         const element = document.getElementById(elementId);
         const opt = {
@@ -1178,99 +1417,101 @@
     }
 
     function downloadBillPDF() {
-        const element = document.getElementById('bill-content');
-        const custName = document.getElementById('bill-cust-name').value.trim() || 'Customer';
-        const filename = `GST_Invoice_${custName.replace(/\s+/g, '_')}.pdf`;
+    const element = document.getElementById('bill-content');
+    const custName = document.getElementById('bill-cust-name').value.trim() || 'Customer';
+    const filename = `GST_Invoice_${custName.replace(/\s+/g, '_')}.pdf`;
 
-        const opt = {
-            margin:       [10, 12, 10, 12],
-            filename:     filename,
-            image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2, useCORS: true },
-            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        };
-        html2pdf().set(opt).from(element).save();
+    // PDF নামানোর আগে স্ক্যান বাটনটি হাইড করে দেওয়া হচ্ছে
+    const scanBtn = element.querySelector('.btn-scan');
+    if (scanBtn) scanBtn.style.display = 'none';
 
-        setTimeout(() => {
-            document.getElementById('bill-form').reset();
-            document.getElementById('bill-date').value = formattedDate;
-            document.getElementById('bill-action-group').style.display = "none";
-            fetchNextInvoiceNumber();
-        }, 1000);
-    }
+    // ইনপুট ফিল্ডের বর্ডার ও শ্যাডো সাময়িক সুন্দর করার জন্য প্যাডিং অ্যাডজাস্টমেন্ট (ঐচ্ছিক)
+    const imeiInput = document.getElementById('bill-prod-imei');
+    if (imeiInput) imeiInput.style.width = '100%';
+
+    const opt = {
+        margin:       [10, 12, 10, 12],
+        filename:     filename,
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    // PDF জেনারেট এবং সেভ করা হচ্ছে
+    html2pdf().set(opt).from(element).save().then(() => {
+        // PDF তৈরি হয়ে গেলে বাটনটি আবার ফিরিয়ে আনা হচ্ছে (রিসেট হওয়ার আগে যদি প্রয়োজন হয়)
+        if (scanBtn) scanBtn.style.display = 'flex';
+    });
+
+    // ফর্ম রিসেট করার টাইমার
+    setTimeout(() => {
+        document.getElementById('bill-form').reset();
+        document.getElementById('bill-date').value = formattedDate;
+        document.getElementById('bill-action-group').style.display = "none";
+        fetchNextInvoiceNumber();
+    }, 1000);
+}
+
     
-let html5QrCode = null;
+    let html5QrCode = null;
 
-function startScanner() {
-    // পপআপ এবং ওভারলে ওপেন করা
-    document.getElementById('scanner-overlay').style.display = 'block';
-    document.getElementById('scanner-modal').style.display = 'block';
+    function startScanner() {
+        document.getElementById('scanner-overlay').style.display = 'block';
+        document.getElementById('scanner-modal').style.display = 'block';
 
-    // ১. আগের কোনো সেশন ব্যাকগ্রাউন্ডে আটকে থাকলে তা জোরপূর্বক ক্লিয়ার করা
-    if (html5QrCode) {
-        try {
-            html5QrCode.clear();
-        } catch(e) {
-            console.log("Clear background instance:", e);
+        if (html5QrCode) {
+            try {
+                html5QrCode.clear();
+            } catch(e) {
+                console.log("Clear background instance:", e);
+            }
         }
-    }
 
-    // ২. নতুন করে ফ্রেশ স্ক্যানার অবজেক্ট তৈরি
-    html5QrCode = new Html5Qrcode("interactive-reader");
-    const config = { fps: 15, qrbox: { width: 250, height: 150 } };
+        html5QrCode = new Html5Qrcode("interactive-reader");
+        const config = { fps: 15, qrbox: { width: 250, height: 150 } };
 
-    // ৩. ক্যামেরা চালু করা
-    html5QrCode.start({ facingMode: "environment" }, config, 
-        (decodedText) => {
-            // সফলভাবে স্ক্যান হলে টেক্সট বক্সে ডাটা বসবে
-            document.getElementById('bill-prod-imei').value = decodedText.trim().toUpperCase();
-            
-            // এবং পপআপ বন্ধ হয়ে ক্যামেরা রিলিজ হবে
+        html5QrCode.start({ facingMode: "environment" }, config, 
+            (decodedText) => {
+                document.getElementById('bill-prod-imei').value = decodedText.trim().toUpperCase();
+                document.getElementById('scanner-overlay').style.display = 'none';
+                document.getElementById('scanner-modal').style.display = 'none';
+                try { html5QrCode.clear(); } catch(e){}
+            }, 
+            (errorMessage) => {
+                // Ignore scanning per-frame errors
+            }
+        ).catch((err) => {
+            console.error("Camera access failed: ", err);
+            alert("ক্যামেরা অন করা যায়নি। দয়া করে নিশ্চিত করুন সাইটটি Netlify লাইভ লিঙ্কে (HTTPS) ওপেন করা আছে এবং ব্রাউজারে ক্যামেরার পারমিশন দেওয়া আছে।");
             document.getElementById('scanner-overlay').style.display = 'none';
             document.getElementById('scanner-modal').style.display = 'none';
-            try { html5QrCode.clear(); } catch(e){}
-        }, 
-        (errorMessage) => {
-            // স্ক্যান করার সময় প্রতি ফ্রেমের এরর ইগনোর করা হবে
+        });
+    }
+
+    function stopScanner() {
+        if (html5QrCode && html5QrCode.isScanning) {
+            html5QrCode.stop().then(() => {
+                forceCloseScanner();
+            }).catch((err) => {
+                console.error("Stop failed: ", err);
+                forceCloseScanner();
+            });
+        } else {
+            forceCloseScanner();
         }
-    ).catch((err) => {
-        console.error("Camera access failed: ", err);
-        // যদি লোকাল ফাইল ওপেন থাকে বা পারমিশন না পায়
-        alert("ক্যামেরা অন করা যায়নি। দয়া করে নিশ্চিত করুন সাইটটি Netlify লাইভ লিঙ্কে (HTTPS) ওপেন করা আছে এবং ব্রাউজারে ক্যামেরার পারমিশন দেওয়া আছে।");
+    }
+
+    function forceCloseScanner() {
         document.getElementById('scanner-overlay').style.display = 'none';
         document.getElementById('scanner-modal').style.display = 'none';
-    });
-}
-
-
-function stopScanner() {
-    if (html5QrCode && html5QrCode.isScanning) {
-        html5QrCode.stop().then(() => {
-            forceCloseScanner();
-        }).catch((err) => {
-            console.error("Stop failed: ", err);
-            forceCloseScanner();
-        });
-    } else {
-        forceCloseScanner();
-    }
-}
-
-// এই নতুন ফাংশনটি নিশ্চিত করবে যে বাটন চাপলে বা এরর হলে পপআপ বন্ধ হবেই হবে
-function forceCloseScanner() {
-    document.getElementById('scanner-overlay').style.display = 'none';
-    document.getElementById('scanner-modal').style.display = 'none';
-    if (html5QrCode) {
-        try {
-            html5QrCode.clear();
-        } catch (e) {
-            console.log("Clear failed: ", e);
+        if (html5QrCode) {
+            try {
+                html5QrCode.clear();
+            } catch (e) {
+                console.log("Clear failed: ", e);
+            }
         }
     }
-}
-
-
-    
 </script>
 
 </body>
