@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1024, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Business Management System</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
@@ -18,6 +18,7 @@
             --bill-primary: #1e3a8a; /* Corporate Blue for Bill */
             --bill-secondary: #f0f4f8;
             --search-color: #0d9488; /* Teal color for Search Sections */
+            --cafe-primary: #2a5298; /* Cyber Cafe Color */
         }
 
         body {
@@ -27,7 +28,7 @@
             padding: 20px;
         }
 
-        /* --- Login Page Styles (Centered) --- */
+        /* --- Login Page Styles --- */
         .login-wrapper {
             display: flex !important;
             justify-content: center !important;
@@ -96,34 +97,22 @@
             transition: 0.3s;
             margin-top: 10px;
         }
-        .btn-login:hover {
-            opacity: 0.9;
-        }
-        .login-error {
-            color: #dc2626;
-            font-size: 14px;
-            font-weight: bold;
-            margin-top: 15px;
-            display: none;
-        }
+        .btn-login:hover { opacity: 0.9; }
+        .login-error { color: #dc2626; font-size: 14px; font-weight: bold; margin-top: 15px; display: none; }
 
-        /* --- Modern Dashboard View Upgrade (Enhanced Layout) --- */
+        /* --- Dashboard Container --- */
         .dashboard-container {
             max-width: 850px;
             margin: 40px auto;
-            /* একটি হালকা ও প্রিমিয়াম গ্রেডিয়েন্ট ব্যাকগ্রাউন্ড */
             background: linear-gradient(145deg, #ffffff, #f1f5f9); 
             padding: 35px;
             border-radius: 20px;
-            /* ড্যাশবোর্ডের চারধারে একটি হালকা গ্লোয়িং বর্ডার */
             border: 1px solid rgba(30, 58, 138, 0.08); 
-            /* আরও গভীর এবং প্রিমিয়াম শ্যাডো ইফেক্ট */
             box-shadow: 0 15px 35px rgba(30, 58, 138, 0.06), 0 5px 15px rgba(0, 0, 0, 0.02);
             position: relative;
             overflow: hidden;
         }
 
-        /* ড্যাশবোর্ডের ভেতরে একটি হালকা ব্যাকগ্রাউন্ড ওয়াটারমার্ক বা শেপ যোগ করার জন্য (ঐচ্ছিক) */
         .dashboard-container::before {
             content: "";
             position: absolute;
@@ -136,7 +125,6 @@
             pointer-events: none;
         }
 
-
         .dashboard-header {
             display: flex;
             justify-content: space-between;
@@ -146,37 +134,16 @@
             margin-bottom: 30px;
         }
 
-        .dashboard-title-group {
-            text-align: left;
-        }
-
-        .dashboard-title {
-            color: #1e293b;
-            font-size: 26px;
-            font-weight: 800;
-            margin: 0;
-            letter-spacing: 0.5px;
-        }
-
-        .dashboard-subtitle {
-            color: #64748b;
-            font-size: 14px;
-            margin-top: 4px;
-        }
-
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 24px;
-            margin-top: 10px;
-        }
+        .dashboard-title-group { text-align: left; }
+        .dashboard-title { color: #1e293b; font-size: 26px; font-weight: 800; margin: 0; letter-spacing: 0.5px; }
+        .dashboard-subtitle { color: #64748b; font-size: 14px; margin-top: 4px; }
+        .dashboard-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 10px; }
 
         .dash-btn {
             display: flex;
             flex-direction: row;
             align-items: center;
             justify-content: flex-start;
-            height: auto;
             padding: 24px;
             font-size: 16px;
             font-weight: 700;
@@ -190,49 +157,6 @@
             text-align: left;
             gap: 20px;
         }
-        
-        /* --- Signature Block Styles --- */
-.signature-container {
-    float: right;
-    width: 250px;
-    text-align: center;
-    margin-top: 40px;
-    margin-bottom: 10px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.signature-container p {
-    margin: 0;
-    font-size: 13px;
-    color: #333;
-}
-
-.sig-space {
-    height: 60px; /* সই এবং স্ট্যাম্প দেওয়ার ফাঁকা জায়গা */
-    border-bottom: 1px dashed #94a3b8; /* সই করার জন্য একটি হালকা ড্যাশড লাইন */
-    margin-bottom: 5px;
-}
-
-.sig-text {
-    font-size: 11px !important;
-    color: #64748b;
-    font-weight: bold;
-    text-transform: uppercase;
-}
-
-/* প্রিন্ট মিডিয়াতেও যাতে সিগনেচার ঠিকঠাক দেখায় */
-@media print {
-    .signature-container {
-        margin-top: 50px !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-    }
-    .sig-space {
-        border-bottom: 1px dashed #000 !important;
-    }
-}
-
-
 
         .dash-icon-box {
             width: 50px;
@@ -250,17 +174,10 @@
         .bg-bill { background: linear-gradient(135deg, #1e3a8a, #3b82f6); }
         .bg-search-pb { background: linear-gradient(135deg, #0f766e, #14b8a6); }
         .bg-search-bill { background: linear-gradient(135deg, #1e40af, #1d4ed8); }
+        .bg-cafe { background: linear-gradient(135deg, #1e3c72, #2a5298); }
 
-        .dash-btn-text {
-            display: flex;
-            flex-direction: column;
-        }
-        .dash-btn-desc {
-            font-size: 12px;
-            color: #64748b;
-            font-weight: 400;
-            margin-top: 2px;
-        }
+        .dash-btn-text { display: flex; flex-direction: column; }
+        .dash-btn-desc { font-size: 12px; color: #64748b; font-weight: 400; margin-top: 2px; }
 
         .dash-btn:hover {
             transform: translateY(-4px);
@@ -269,99 +186,59 @@
             background: #f8fafc;
         }
 
-        .dash-btn:active {
-            transform: translateY(-1px);
-        }
+        /* --- Signature Block Styles --- */
+        .signature-container { float: right; width: 250px; text-align: center; margin-top: 40px; margin-bottom: 10px; }
+        .signature-container p { margin: 0; font-size: 13px; color: #333; }
+        .sig-space { height: 60px; border-bottom: 1px dashed #94a3b8; margin-bottom: 5px; }
+        .sig-text { font-size: 11px !important; color: #64748b; font-weight: bold; text-transform: uppercase; }
+
+        /* --- Cyber Cafe Custom Section Styles --- */
+        .cafe-main-layout { display: flex; gap: 20px; flex-wrap: wrap; text-align: left; margin-top: 15px; }
+        .cafe-form-section { flex: 1; min-width: 300px; background: #fff; padding: 20px; border-radius: 10px; border: 1px solid #e2e8f0; height: fit-content; }
+        .cafe-data-section { flex: 2; min-width: 320px; background: #fff; padding: 20px; border-radius: 10px; border: 1px solid #e2e8f0; }
+        .cafe-summary-boxes { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 20px; }
+        .cafe-card { padding: 12px; border-radius: 8px; text-align: center; color: white; font-weight: bold; }
+        .cafe-card.blue { background: #3a86ff; }
+        .cafe-card.green { background: #38b000; }
+        .cafe-card.orange { background: #ffbe0b; color: #333; }
+        .cafe-card h3 { font-size: 12px; margin-bottom: 5px; text-transform: uppercase; }
+        .cafe-card p { font-size: 18px; margin: 0; }
+        .cafe-table-container { overflow-x: auto; max-height: 350px; border: 1px solid #eee; border-radius: 6px; margin-bottom: 15px; }
+        .cafe-btn-delete { background-color: #e63946; color: white; padding: 4px 8px; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; }
+        .cafe-btn-delete:hover { background-color: #c92a3a; }
 
         /* Scanner Popup Style */
         .scanner-container {
             display: none;
             position: fixed;
-            top: 50%;
-            left: 50%;
+            top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.3);
-            z-index: 10000;
-            width: 90%;
-            max-width: 400px;
+            background: white; padding: 15px; border-radius: 8px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.3); z-index: 10000;
+            width: 90%; max-width: 400px;
         }
         .scanner-overlay {
-            display: none;
-            position: fixed;
+            display: none; position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 9999;
+            background: rgba(0,0,0,0.5); z-index: 9999;
         }
         
-        /* New Compact Scanner Button inline styling */
-        .imei-container {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            width: 100%;
-        }
+        .imei-container { display: flex; align-items: center; gap: 6px; width: 100%; }
         .btn-scan {
-            background: var(--bill-primary);
-            color: white;
-            border: none;
-            height: 36px;
-            width: 40px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            padding: 0;
-            transition: opacity 0.2s;
+            background: var(--bill-primary); color: white; border: none;
+            height: 36px; width: 40px; border-radius: 4px; cursor: pointer;
+            font-size: 16px; display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; padding: 0; transition: opacity 0.2s;
         }
-        .btn-scan:hover {
-            opacity: 0.9;
-        }
-        
-        .btn-scan-close {
-            background: #dc2626;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 4px;
-            width: 100%;
-            margin-top: 10px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+        .btn-scan-close { background: #dc2626; color: white; border: none; padding: 8px 15px; border-radius: 4px; width: 100%; margin-top: 10px; font-weight: bold; cursor: pointer; }
 
-        .btn-back {
-            background-color: #6c757d;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 4px;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: bold;
-            display: inline-block;
-            margin-bottom: 15px;
-            cursor: pointer;
-            border: none;
-        }
+        .btn-back { background-color: #6c757d; color: white; padding: 8px 15px; border-radius: 4px; text-decoration: none; font-size: 14px; font-weight: bold; display: inline-block; margin-bottom: 15px; cursor: pointer; border: none; }
 
         .app-section { display: none; }
         .active-section { display: block !important; }
         .hidden-section { display: none !important; }
 
-        .container {
-            max-width: 950px;
-            margin: 0 auto;
-            background: #fff;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            box-sizing: border-box;
-        }
+        .container { max-width: 950px; margin: 0 auto; background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); box-sizing: border-box; }
 
         /* --- Passbook Styles --- */
         .brand-header { border-bottom: 3px solid var(--primary-color); padding-bottom: 10px; margin-bottom: 15px; }
@@ -398,7 +275,6 @@
         .btn-pdf { background-color: #28a745; color: white; }
         .btn-print { background-color: #007bff; color: white; }
         button.action-btn:hover { opacity: 0.9; }
-
         .post-save-actions { display: none; }
 
         /* --- GST Tax Invoice Styles --- */
@@ -411,14 +287,12 @@
         .bill-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         .bill-table th { background-color: var(--bill-primary); color: white; padding: 10px; font-size: 13px; text-align: left; border: 1px solid #ddd; }
         .bill-table td { padding: 8px; border: 1px solid #ddd; vertical-align: middle; }
-        
         .calculated-field { background-color: #f9f9f9 !important; font-weight: bold; color: #333; }
         
         .summary-box { float: right; width: 40%; margin-top: 20px; border-collapse: collapse; }
         .summary-box td { padding: 8px; border: 1px solid #ddd; font-size: 14px; }
         .summary-box tr.total-row { font-weight: bold; background-color: #e2e8f0; color: #000; }
         .clear-fix { clear: both; }
-        
         .terms-box { font-size: 11px; color: #666; margin-top: 20px; border-top: 1px dashed #ccc; padding-top: 10px; width: 55%; float: left; }
 
         /* --- Search Engine Styles --- */
@@ -429,7 +303,6 @@
         .search-input-group label { display: block; font-size: 14px; font-weight: bold; color: #334155; margin-bottom: 6px; }
         .search-input-group input { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; font-size: 14px; }
         .btn-search-trigger { width: 100%; padding: 12px; background-color: var(--search-color); color: white; border: none; border-radius: 6px; font-weight: bold; font-size: 15px; cursor: pointer; }
-        .btn-search-trigger:hover { opacity: 0.9; }
         .no-data-msg { color: #94a3b8; text-align: center; font-style: italic; margin-top: 80px; font-size: 15px; }
         
         .preview-text { font-size: 14px; font-weight: bold; color: #111; padding: 4px 0; display: block; border-bottom: 1px dashed #ddd; min-height: 20px; }
@@ -437,81 +310,17 @@
         .preview-label-bill { font-size: 13px; font-weight: bold; color: var(--bill-primary); margin-bottom: 2px; display: block;}
 
         /* --- PROFESSIONAL TAX INVOICE PRINT UPGRADE --- */
-        #bill-content, #print-search-bill-area {
-            background: #ffffff !important;
-            box-sizing: border-box !important;
-        }
+        #bill-content, #print-search-bill-area { background: #ffffff !important; box-sizing: border-box !important; }
+        #bill-content .bill-header, #print-search-bill-area .bill-header { border-bottom: 3px double var(--bill-primary) !important; padding-bottom: 15px !important; margin-bottom: 20px !important; }
+        #bill-content .bill-title-main, #print-search-bill-area .bill-title-main { font-size: 36px !important; font-weight: 800 !important; color: var(--bill-primary) !important; text-shadow: 1px 1px 0px rgba(0,0,0,0.1); }
+        #bill-content .bill-sect-title, #print-search-bill-area .bill-sect-title { background-color: var(--bill-primary) !important; color: white !important; padding: 6px 12px !important; font-size: 13px !important; font-weight: bold !important; letter-spacing: 0.5px !important; border-radius: 0px !important; margin: 20px 0 10px 0 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        #bill-content .bill-table, #print-search-bill-area .bill-table { width: 100% !important; border-collapse: collapse !important; margin: 15px 0 !important; }
+        #bill-content .bill-table th, #print-search-bill-area .bill-table th { background-color: #f1f5f9 !important; color: #1e293b !important; font-weight: 700 !important; text-transform: uppercase !important; font-size: 12px !important; border: 1px solid #94a3b8 !important; padding: 10px !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        #bill-content .bill-table td, #print-search-bill-area .bill-table td { border: 1px solid #94a3b8 !important; padding: 10px !important; font-size: 13px !important; }
+        #bill-content .summary-box, #print-search-bill-area .summary-box { border: 1px solid #94a3b8 !important; margin-top: 25px !important; background: #fafafa !important; }
+        #bill-content .summary-box td, #print-search-bill-area .summary-box td { border: 1px solid #94a3b8 !important; padding: 9px 12px !important; font-size: 13px !important; }
+        #bill-content .summary-box tr.total-row, #print-search-bill-area .summary-box tr.total-row { background-color: #e2e8f0 !important; font-size: 14px !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
 
-        #bill-content .bill-header, #print-search-bill-area .bill-header {
-            border-bottom: 3px double var(--bill-primary) !important;
-            padding-bottom: 15px !important;
-            margin-bottom: 20px !important;
-        }
-
-        #bill-content .bill-title-main, #print-search-bill-area .bill-title-main {
-            font-size: 36px !important;
-            font-weight: 800 !important;
-            color: var(--bill-primary) !important;
-            text-shadow: 1px 1px 0px rgba(0,0,0,0.1);
-        }
-
-        #bill-content .bill-sect-title, #print-search-bill-area .bill-sect-title {
-            background-color: var(--bill-primary) !important;
-            color: white !important;
-            padding: 6px 12px !important;
-            font-size: 13px !important;
-            font-weight: bold !important;
-            letter-spacing: 0.5px !important;
-            border-radius: 0px !important;
-            margin: 20px 0 10px 0 !important;
-            -webkit-print-color-adjust: exact !important;
-            print-color-adjust: exact !important;
-        }
-
-        #bill-content .bill-table, #print-search-bill-area .bill-table {
-            width: 100% !important;
-            border-collapse: collapse !important;
-            margin: 15px 0 !important;
-        }
-
-        #bill-content .bill-table th, #print-search-bill-area .bill-table th {
-            background-color: #f1f5f9 !important;
-            color: #1e293b !important;
-            font-weight: 700 !important;
-            text-transform: uppercase !important;
-            font-size: 12px !important;
-            border: 1px solid #94a3b8 !important;
-            padding: 10px !important;
-            -webkit-print-color-adjust: exact !important;
-            print-color-adjust: exact !important;
-        }
-
-        #bill-content .bill-table td, #print-search-bill-area .bill-table td {
-            border: 1px solid #94a3b8 !important;
-            padding: 10px !important;
-            font-size: 13px !important;
-        }
-
-        #bill-content .summary-box, #print-search-bill-area .summary-box {
-            border: 1px solid #94a3b8 !important;
-            margin-top: 25px !important;
-            background: #fafafa !important;
-        }
-
-        #bill-content .summary-box td, #print-search-bill-area .summary-box td {
-            border: 1px solid #94a3b8 !important;
-            padding: 9px 12px !important;
-            font-size: 13px !important;
-        }
-
-        #bill-content .summary-box tr.total-row, #print-search-bill-area .summary-box tr.total-row {
-            background-color: #e2e8f0 !important;
-            font-size: 14px !important;
-            -webkit-print-color-adjust: exact !important;
-            print-color-adjust: exact !important;
-        }
-
-        /* --- PRINT / PDF STYLING (FIXED CORNER CLIPPING) --- */
         @media print {
             body { background: none; padding: 0; margin: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
             .container { box-shadow: none; padding: 0; max-width: 100% !important; width: 100% !important; margin: 0 !important; }
@@ -522,18 +331,17 @@
             input, textarea, select { border: none !important; background: transparent !important; padding: 0 !important; font-size: 14px !important; color: #000 !important; -webkit-appearance: none; appearance: none; }
             .info-group label::after { content: "" !important; }
             .account-info { background: #fdfafb !important; border: 1px solid #b5332a; }
-            
-            /* Enhanced print structures */
             #bill-content .bill-sect-title, #print-search-bill-area .bill-sect-title { background-color: var(--bill-primary) !important; color: #fff !important; }
             #bill-content .bill-table th, #print-search-bill-area .bill-table th { background-color: #f1f5f9 !important; color: #000 !important; border: 1px solid #000 !important; }
             #bill-content .bill-table td, #print-search-bill-area .bill-table td { border: 1px solid #000 !important; }
             #bill-content .summary-box, #print-search-bill-area .summary-box { border: 1px solid #000 !important; }
             #bill-content .summary-box td, #print-search-bill-area .summary-box td { border: 1px solid #000 !important; }
-            
             .calculated-field { background-color: transparent !important; }
             .preview-text { border-bottom: none !important; }
             @page { size: A4; margin: 8mm 10mm 8mm 10mm; }
             .btn-scan { display: none !important; }
+            .signature-container { margin-top: 50px !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .sig-space { border-bottom: 1px dashed #000 !important; }
         }
     </style>
 </head>
@@ -582,6 +390,14 @@
             <div class="dash-btn-text">
                 <span>Create GST Retail Bill</span>
                 <span class="dash-btn-desc">Generate tax invoice for mobile sales</span>
+            </div>
+        </button>
+
+        <button class="dash-btn" onclick="switchSection('cyber-cafe-section')">
+            <div class="dash-icon-box bg-cafe">🖥</div>
+            <div class="dash-btn-text">
+                <span>Cyber Cafe Ledger</span>
+                <span class="dash-btn-desc">Customer entries, services and daily earnings tracker</span>
             </div>
         </button>
 
@@ -851,6 +667,92 @@
     </div>
 </div>
 
+<!-- --- INTEGRATED CYBER CAFE SECTION --- -->
+<div id="cyber-cafe-section" class="app-section">
+    <div class="container" style="max-width: 1100px;">
+        <button class="btn-back" onclick="showDashboard()">← Back to Dashboard</button>
+        <div class="bill-sect-title" style="background-color: var(--cafe-primary); color: white;">🖥 Cyber Cafe & Online Services Digital Register</div>
+        
+        <div class="cafe-main-layout">
+            <div class="cafe-form-section">
+                <h2 style="margin-bottom: 15px; font-size: 18px; color: var(--cafe-primary);">New Entry Add Korun</h2>
+                <form id="entryForm">
+                    <div class="info-group">
+                        <label style="color:#333;">Tarikh (Date)</label>
+                        <input type="date" id="cafe-date" required>
+                    </div>
+                    <div class="info-group">
+                        <label style="color:#333;">Customer er Naam</label>
+                        <input type="text" id="cafe-name" placeholder="E.g. Ramesh Das" required>
+                    </div>
+                    <div class="info-group">
+                        <label style="color:#333;">Service er Dhoron (Work Type)</label>
+                        <select id="cafe-service" required style="width: 100%; border: 1px solid #ccc; padding: 8px; border-radius: 4px; font-size: 14px;">
+                            <option value="">Select Service</option>
+                            <option value="Annapurna Apply">Annapurna Apply</option>
+                            <option value="Ration Card: New Apply">Ration Card: New Apply</option>
+                            <option value="Ration Card: Split">Ration Card: Split</option>
+                            <option value="Ration Card: Update">Ration Card: Update</option>
+                            <option value="Ration Card: Shifting">Ration Card: Shifting</option>
+                            <option value="Voter Card: New Apply">Voter Card: New Apply</option>
+                            <option value="Voter Card: Update">Voter Card: Update</option>
+                            <option value="Voter Card: Shifting">Voter Card: Shifting</option>
+                            <option value="Aadhaar Card: Document Update">Aadhaar Card: Document Update</option>
+                            <option value="Aadhaar Card: Address Change">Aadhaar Card: Address Change</option>
+                            <option value="PAN Card: New Apply">PAN Card: New Apply</option>
+                            <option value="PAN Card: Update">PAN Card: Update</option>
+                            <option value="Photo Print">Photo Print</option>
+                            <option value="Online Form Fill-up">Online Form Fill-up</option>
+                            <option value="Xerox / Print / Lamination">Xerox / Print / Lamination</option>
+                            <option value="Others">Others (Onno Kaj)</option>
+                        </select>
+                    </div>
+                    <div class="info-group">
+                        <label style="color:#333;">Taka (Amount Received)</label>
+                        <input type="number" id="cafe-amount" placeholder="₹" min="0" required>
+                    </div>
+                    <div class="info-group">
+                        <label style="color:#333;">Remarks / Note (Optional)</label>
+                        <input type="text" id="cafe-remarks" placeholder="Mobile no ba details">
+                    </div>
+                    <button type="submit" style="width: 100%; padding: 12px; background-color: var(--cafe-primary); color: white; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer;">Data Save Korun</button>
+                </form>
+            </div>
+
+            <div class="cafe-data-section">
+                <div class="cafe-summary-boxes">
+                    <div class="cafe-card blue"><h3>Total Customer</h3><p id="totalCustomers">0</p></div>
+                    <div class="cafe-card green"><h3>Total Earning</h3><p>₹<span id="totalEarnings">0</span></p></div>
+                    <div class="cafe-card orange"><h3>Ajker Earning</h3><p>₹<span id="todayEarnings">0</span></p></div>
+                </div>
+
+                <div style="display: flex; gap: 10px; margin-bottom: 15px; align-items: center; flex-wrap: wrap;">
+                    <label for="filterDate" style="font-weight:600; font-size:14px;">Date Onujayi Filter:</label>
+                    <input type="date" id="filterDate" style="padding: 6px; border: 1px solid #ccc; border-radius: 4px;">
+                    <button id="clearFilter" style="width:auto; padding:6px 12px; font-size:12px; background-color:#6c757d; color:white; border:none; border-radius:4px; cursor:pointer;">All Reset</button>
+                </div>
+
+                <div class="cafe-table-container">
+                    <table class="bill-table" style="margin-top:0;">
+                        <thead>
+                            <tr style="background-color: #f8f9fa;">
+                                <th style="background-color:#f8f9fa; color:#555; font-size:13px;">Tarikh</th>
+                                <th style="background-color:#f8f9fa; color:#555; font-size:13px;">Naam</th>
+                                <th style="background-color:#f8f9fa; color:#555; font-size:13px;">Service</th>
+                                <th style="background-color:#f8f9fa; color:#555; font-size:13px;">Taka (₹)</th>
+                                <th style="background-color:#f8f9fa; color:#555; font-size:13px;">Remarks</th>
+                                <th style="background-color:#f8f9fa; color:#555; font-size:13px;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ledgerBody"></tbody>
+                    </table>
+                </div>
+                <button type="button" id="exportCSV" style="background-color: #2b9348; width: 100%; padding: 12px; color: white; border: none; border-radius: 6px; font-size: 15px; font-weight: bold; cursor: pointer;">Data Backup Excel/CSV Download</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="search-passbook-section" class="app-section">
     <div class="container">
         <button class="btn-back" onclick="showDashboard()">← Back to Dashboard</button>
@@ -908,7 +810,10 @@
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
 
-    // অটোমেটিক আজকের তারিখ সেট করা
+    // অটোমেটিক আজকের তারিখ সেট করা (স্থানীয় টাইমজোন ফিক্স সহ)
+    const offset = new Date().getTimezoneOffset() * 60000;
+    const localTodayStr = new Date(Date.now() - offset).toISOString().split('T')[0];
+    
     const today = new Date();
     const dd = String(today.getDate()).padStart(2, '0');
     const mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -917,6 +822,12 @@
     
     document.getElementById('current-date').value = formattedDate;
     document.getElementById('bill-date').value = formattedDate;
+    document.getElementById('cafe-date').value = localTodayStr;
+
+    // --- সাইবার ক্যাফে ডেটা ভেরিয়েবল এবং সিকিউরিটি পিন ---
+    const STORAGE_KEY = 'cyber_cafe_ledger_data';
+    const DELETE_PIN = '2178';
+    let cafeDataList = [];
 
     // --- লগইন কন্ট্রোল সিস্টেম ---
     function handleLogin(e) {
@@ -939,11 +850,10 @@
     function handleLogout() {
         if (confirm("Are you sure you want to logout?")) {
             sessionStorage.removeItem('isLoggedIn');
-            
             document.getElementById('dashboard-view').classList.remove('active-section');
             document.getElementById('dashboard-view').classList.add('hidden-section');
             
-            const sections = ['passbook-section', 'bill-section', 'search-passbook-section', 'search-bill-section'];
+            const sections = ['passbook-section', 'bill-section', 'cyber-cafe-section', 'search-passbook-section', 'search-bill-section'];
             sections.forEach(id => document.getElementById(id).classList.remove('active-section'));
             
             document.getElementById('login-view').classList.remove('hidden-section');
@@ -966,7 +876,7 @@
         document.getElementById('dashboard-view').classList.remove('active-section');
         document.getElementById('dashboard-view').classList.add('hidden-section');
         
-        const sections = ['passbook-section', 'bill-section', 'search-passbook-section', 'search-bill-section'];
+        const sections = ['passbook-section', 'bill-section', 'cyber-cafe-section', 'search-passbook-section', 'search-bill-section'];
         sections.forEach(id => document.getElementById(id).classList.remove('active-section'));
         
         document.getElementById(sectionId).classList.add('active-section');
@@ -976,11 +886,14 @@
         if (sectionId === 'bill-section') {
             fetchNextInvoiceNumber();
         }
+        if (sectionId === 'cyber-cafe-section') {
+            syncCafeDataFromFirebase();
+        }
     }
 
     function showDashboard() {
         if(sessionStorage.getItem('isLoggedIn') !== 'true') return;
-        const sections = ['passbook-section', 'bill-section', 'search-passbook-section', 'search-bill-section'];
+        const sections = ['passbook-section', 'bill-section', 'cyber-cafe-section', 'search-passbook-section', 'search-bill-section'];
         sections.forEach(id => document.getElementById(id).classList.remove('active-section'));
         
         document.getElementById('dashboard-view').classList.remove('hidden-section');
@@ -992,18 +905,13 @@
         invInput.value = "Loading..."; 
         invInput.readOnly = true;
         invInput.style.backgroundColor = "#f1f5f9";
-
         const currentYear = new Date().getFullYear();
 
         database.ref('metadata/last_invoice_serial').once('value').then((snapshot) => {
             let lastSerial = snapshot.val();
-            if (!lastSerial) {
-                lastSerial = 0;
-            }
-            
+            if (!lastSerial) lastSerial = 0;
             const nextSerial = lastSerial + 1;
             const formattedSerial = String(nextSerial).padStart(3, '0');
-            
             invInput.value = `SRMB${currentYear}${formattedSerial}`;
             invInput.setAttribute('data-serial', nextSerial);
         }).catch((error) => {
@@ -1090,7 +998,6 @@
         };
 
         const safeInvKey = invNo.replace(/\//g, "-");
-
         const updates = {};
         updates['bills/' + safeInvKey] = billRecord;
         updates['metadata/last_invoice_serial'] = currentSerial; 
@@ -1107,25 +1014,142 @@
         });
     }
 
+    // --- CYBER CAFE ENGINE & FIREBASE SYNC INTEGRATION ---
+    function syncCafeDataFromFirebase() {
+        database.ref('cyber_cafe_ledger').once('value').then((snapshot) => {
+            const cloudData = snapshot.val();
+            cafeDataList = cloudData ? Object.values(cloudData) : [];
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(cafeDataList));
+            calculateCafeStats();
+            renderCafeTable();
+        }).catch((err) => {
+            console.error("Cloud Fetch Failed, falling back to LocalStorage:", err);
+            cafeDataList = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            calculateCafeStats();
+            renderCafeTable();
+        });
+    }
+
+    function calculateCafeStats() {
+        document.getElementById('totalCustomers').textContent = cafeDataList.length;
+        document.getElementById('totalEarnings').textContent = cafeDataList.reduce((sum, item) => sum + Number(item.amount), 0);
+        
+        const offsetCalc = new Date().getTimezoneOffset() * 60000;
+        const currentLocalToday = new Date(Date.now() - offsetCalc).toISOString().split('T')[0];
+        
+        document.getElementById('todayEarnings').textContent = cafeDataList.filter(item => item.date === currentLocalToday).reduce((sum, item) => sum + Number(item.amount), 0);
+    }
+
+    function renderCafeTable(filterDate = '') {
+        const ledgerBody = document.getElementById('ledgerBody');
+        ledgerBody.innerHTML = '';
+        let filteredList = filterDate ? cafeDataList.filter(item => item.date === filterDate) : cafeDataList;
+        filteredList.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        if (filteredList.length === 0) {
+            ledgerBody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#888; padding:20px;">Kono record nei.</td></tr>`;
+            return;
+        }
+
+        filteredList.forEach(item => {
+            const tr = document.createElement('tr');
+            const d = new Date(item.date);
+            const formattedDate = !isNaN(d.getTime()) ? d.toLocaleDateString('en-GB') : item.date;
+            tr.innerHTML = `
+                <td>${formattedDate}</td>
+                <td><strong>${escapeHtml(item.name)}</strong></td>
+                <td><span style="background-color:#eef1f6; padding:3px 8px; border-radius:4px; font-size:12px;">${escapeHtml(item.service)}</span></td>
+                <td style="font-weight:600; color:#2b9348;">₹${item.amount}</td>
+                <td style="color:#666; font-size:13px;">${escapeHtml(item.remarks || '-')}</td>
+                <td><button class="cafe-btn-delete" onclick="deleteCafeEntry('${item.id}')">Delete</button></td>
+            `;
+            ledgerBody.appendChild(tr);
+        });
+    }
+
+    function escapeHtml(str) { return str ? str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;") : ''; }
+
+    document.getElementById('entryForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const entryId = 'id_' + Date.now();
+        const newRecord = {
+            id: entryId,
+            date: document.getElementById('cafe-date').value,
+            name: document.getElementById('cafe-name').value.trim(),
+            service: document.getElementById('cafe-service').value,
+            amount: parseFloat(document.getElementById('cafe-amount').value) || 0,
+            remarks: document.getElementById('cafe-remarks').value.trim()
+        };
+
+        // মেঘে (Firebase) এবং লোকাল স্টোরেজে ডেটা সংরক্ষণ
+        database.ref('cyber_cafe_ledger/' + entryId).set(newRecord).then(() => {
+            cafeDataList.push(newRecord);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(cafeDataList));
+            calculateCafeStats();
+            renderCafeTable(document.getElementById('filterDate').value);
+            
+            // ফর্ম ফিল্ড রিসেট
+            document.getElementById('cafe-name').value = '';
+            document.getElementById('cafe-service').value = '';
+            document.getElementById('cafe-amount').value = '';
+            document.getElementById('cafe-remarks').value = '';
+            alert('✔ Cyber Cafe Data successfully saved to Cloud Engine!');
+        }).catch((err) => {
+            console.error("Firebase save failed:", err);
+            alert("❌ ক্লাউডে সেভ করা সম্ভব হয়নি।");
+        });
+    });
+
+    window.deleteCafeEntry = function(id) {
+        const userPin = prompt('Ei data-ti delete korar jonno 4-digit er Security PIN din:');
+        if (userPin === null) return;
+        
+        if (userPin === DELETE_PIN) {
+            database.ref('cyber_cafe_ledger/' + id).remove().then(() => {
+                cafeDataList = cafeDataList.filter(item => item.id !== id);
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(cafeDataList)); 
+                calculateCafeStats(); 
+                renderCafeTable(document.getElementById('filterDate').value);
+                alert('Data-ti successfully cloud & local theke delete kora hoyeche.');
+            }).catch((err) => {
+                alert("❌ ক্লাউড থেকে ডিলিট করা যায়নি।");
+            });
+        } else {
+            alert('Bhul PIN! Data delete kora sombhob noy.');
+        }
+    }
+
+    document.getElementById('filterDate').addEventListener('change', function() { renderCafeTable(this.value); });
+    document.getElementById('clearFilter').addEventListener('click', function() { document.getElementById('filterDate').value = ''; renderCafeTable(); });
+
+    document.getElementById('exportCSV').addEventListener('click', () => {
+        if(cafeDataList.length === 0) { alert('Kono data nei!'); return; }
+        let csvContent = "Tarikh,Customer Name,Service Type,Amount (INR),Remarks\n";
+        cafeDataList.forEach(item => { csvContent += `"${item.date}","${item.name.replace(/"/g, '""')}","${item.service}","${item.amount}","${(item.remarks || '').replace(/"/g, '""')}"\n`; });
+        
+        const blob = new Blob([new Uint8Array([0xEF, 0xBB, 0xBF]), csvContent], { type: "text/csv;charset=utf-8;" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.setAttribute("download", `Cyber_Cafe_Ledger_${localTodayStr}.csv`);
+        document.body.appendChild(link); link.click(); document.body.removeChild(link);
+    });
+
+    // --- SEARCH AND PDF RETRIEVAL SYSTEMS ---
     function executePassbookSearch() {
         const query = document.getElementById('search-p-acc').value.trim();
         const panel = document.getElementById('passbook-result-panel');
-        
         if(!query) {
             panel.innerHTML = '<div class="no-data-msg" style="color:red;">Please input a valid account sequence!</div>';
             return;
         }
-
         panel.innerHTML = '<div class="no-data-msg">Searching Cloud Database...</div>';
 
         database.ref('passbooks/' + query).once('value').then((snapshot) => {
             let item = snapshot.val();
-            
             if (!item) {
                 const localData = localStorage.getItem('PB_' + query);
                 if (localData) item = JSON.parse(localData);
             }
-
             if(!item) {
                 panel.innerHTML = '<div class="no-data-msg" style="color:#dc2626;">❌ No Record Found for Account Number: ' + query + '</div>';
                 return;
@@ -1212,23 +1236,16 @@
                                             </div>
                                         </td>
                                     </tr>
-                                end balance-note-container
                                 </table>
-                                
                                 <div class="balance-note-container">
                                     <div class="balance-info-note">
                                         Get Account Balance Give missed call on 18002741000 or WhatsApp +91 22 4406 6666
                                     </div>
                                 </div>
                             </div>
-                            
                             <div class="form-photo-cell">
                                 <div class="photo-box-wrapper">
-                                    <div class="photo-box">
-                                        <div class="photo-box-text">
-                                            Affix<br>Passport Size<br>Photograph
-                                        </div>
-                                    </div>
+                                    <div class="photo-box"><div class="photo-box-text">Affix<br>Passport Size<br>Photograph</div></div>
                                 </div>
                             </div>
                         </div>
@@ -1245,24 +1262,19 @@
     function executeBillSearch() {
         let query = document.getElementById('search-b-inv').value.trim().toUpperCase();
         const panel = document.getElementById('bill-result-panel');
-        
         if(!query) {
             panel.innerHTML = '<div class="no-data-msg" style="color:red;">Please specify an Invoice Number!</div>';
             return;
         }
-
         panel.innerHTML = '<div class="no-data-msg">Searching Cloud Database...</div>';
-        
         const safeInvKey = query.replace(/\//g, "-");
 
         database.ref('bills/' + safeInvKey).once('value').then((snapshot) => {
             let item = snapshot.val();
-
             if (!item) {
                 const localData = localStorage.getItem('BILL_' + query);
                 if (localData) item = JSON.parse(localData);
             }
-
             if(!item) {
                 panel.innerHTML = '<div class="no-data-msg" style="color:#dc2626;">❌ No Registered Invoice Found for Reference: ' + query + '</div>';
                 return;
@@ -1344,37 +1356,20 @@
                     </div>
 
                     <table class="summary-box">
-                        <tr>
-                            <td>Taxable Value (Excl. GST)</td>
-                            <td style="text-align: right; font-weight:bold;">₹ ${item.taxable}</td>
-                        </tr>
-                        <tr>
-                            <td>CGST (9%)</td>
-                            <td style="text-align: right;">₹ ${item.cgst}</td>
-                        </tr>
-                        <tr>
-                            <td>SGST (9%)</td>
-                            <td style="text-align: right;">₹ ${item.sgst}</td>
-                        </tr>
-                        <tr class="total-row">
-                            <td>Total Amount (Incl. GST)</td>
-                            <td style="text-align: right; font-weight: bold; color:#b5332a;">₹ ${item.grandTotal}</td>
-                        </tr>
+                        <tr><td>Taxable Value (Excl. GST)</td><td style="text-align: right; font-weight:bold;">₹ ${item.taxable}</td></tr>
+                        <tr><td>CGST (9%)</td><td style="text-align: right;">₹ ${item.cgst}</td></tr>
+                        <tr><td>SGST (9%)</td><td style="text-align: right;">₹ ${item.sgst}</td></tr>
+                        <tr class="total-row"><td>Total Amount (Incl. GST)</td><td style="text-align: right; font-weight: bold; color:#b5332a;">₹ ${item.grandTotal}</td></tr>
                     </table>
                     <div class="clear-fix"></div>
-                    <!-- Signature Block Starts -->
-<div class="signature-container">
-    <p>For <b>SRMB AMIGO</b></p>
-    <div class="sig-space"></div>
-    <p class="sig-text">Authorized Signatory / Stamp</p>
-</div>
-<div class="clear-fix"></div>
-<!-- Signature Block Ends -->
-
                     
-                    
+                    <div class="signature-container">
+                        <p>For <b>SRMB AMIGO</b></p>
+                        <div class="sig-space"></div>
+                        <p class="sig-text">Authorized Signatory / Stamp</p>
+                    </div>
+                    <div class="clear-fix"></div>
                 </div>
-                
                 <div class="btn-container" style="margin-top:15px;">
                     <button type="button" class="action-btn btn-pdf" onclick="downloadSearchedPDF('print-search-bill-area', 'Invoice_${item.invNo.replace(/\//g, "-")}')">Save PDF</button>
                     <button type="button" class="action-btn btn-print" onclick="window.print()">Print Invoice</button>
@@ -1417,42 +1412,37 @@
     }
 
     function downloadBillPDF() {
-    const element = document.getElementById('bill-content');
-    const custName = document.getElementById('bill-cust-name').value.trim() || 'Customer';
-    const filename = `GST_Invoice_${custName.replace(/\s+/g, '_')}.pdf`;
+        const element = document.getElementById('bill-content');
+        const custName = document.getElementById('bill-cust-name').value.trim() || 'Customer';
+        const filename = `GST_Invoice_${custName.replace(/\s+/g, '_')}.pdf`;
 
-    // PDF নামানোর আগে স্ক্যান বাটনটি হাইড করে দেওয়া হচ্ছে
-    const scanBtn = element.querySelector('.btn-scan');
-    if (scanBtn) scanBtn.style.display = 'none';
+        const scanBtn = element.querySelector('.btn-scan');
+        if (scanBtn) scanBtn.style.display = 'none';
 
-    // ইনপুট ফিল্ডের বর্ডার ও শ্যাডো সাময়িক সুন্দর করার জন্য প্যাডিং অ্যাডজাস্টমেন্ট (ঐচ্ছিক)
-    const imeiInput = document.getElementById('bill-prod-imei');
-    if (imeiInput) imeiInput.style.width = '100%';
+        const imeiInput = document.getElementById('bill-prod-imei');
+        if (imeiInput) imeiInput.style.width = '100%';
 
-    const opt = {
-        margin:       [10, 12, 10, 12],
-        filename:     filename,
-        image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2, useCORS: true },
-        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    };
+        const opt = {
+            margin:       [10, 12, 10, 12],
+            filename:     filename,
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2, useCORS: true },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
 
-    // PDF জেনারেট এবং সেভ করা হচ্ছে
-    html2pdf().set(opt).from(element).save().then(() => {
-        // PDF তৈরি হয়ে গেলে বাটনটি আবার ফিরিয়ে আনা হচ্ছে (রিসেট হওয়ার আগে যদি প্রয়োজন হয়)
-        if (scanBtn) scanBtn.style.display = 'flex';
-    });
+        html2pdf().set(opt).from(element).save().then(() => {
+            if (scanBtn) scanBtn.style.display = 'flex';
+        });
 
-    // ফর্ম রিসেট করার টাইমার
-    setTimeout(() => {
-        document.getElementById('bill-form').reset();
-        document.getElementById('bill-date').value = formattedDate;
-        document.getElementById('bill-action-group').style.display = "none";
-        fetchNextInvoiceNumber();
-    }, 1000);
-}
-
+        setTimeout(() => {
+            document.getElementById('bill-form').reset();
+            document.getElementById('bill-date').value = formattedDate;
+            document.getElementById('bill-action-group').style.display = "none";
+            fetchNextInvoiceNumber();
+        }, 1000);
+    }
     
+    // --- QR/BARCODE SCANNER ENGINE ---
     let html5QrCode = null;
 
     function startScanner() {
@@ -1460,11 +1450,7 @@
         document.getElementById('scanner-modal').style.display = 'block';
 
         if (html5QrCode) {
-            try {
-                html5QrCode.clear();
-            } catch(e) {
-                console.log("Clear background instance:", e);
-            }
+            try { html5QrCode.clear(); } catch(e) {}
         }
 
         html5QrCode = new Html5Qrcode("interactive-reader");
@@ -1477,40 +1463,13 @@
                 document.getElementById('scanner-modal').style.display = 'none';
                 try { html5QrCode.clear(); } catch(e){}
             }, 
-            (errorMessage) => {
-                // Ignore scanning per-frame errors
-            }
+            (errorMessage) => {}
         ).catch((err) => {
             console.error("Camera access failed: ", err);
-            alert("ক্যামেরা অন করা যায়নি। দয়া করে নিশ্চিত করুন সাইটটি Netlify লাইভ লিঙ্কে (HTTPS) ওপেন করা আছে এবং ব্রাউজারে ক্যামেরার পারমিশন দেওয়া আছে।");
+            alert("ক্যামেরা অন করা যায়নি। পারমিশন চেক করুন।");
             document.getElementById('scanner-overlay').style.display = 'none';
             document.getElementById('scanner-modal').style.display = 'none';
         });
-    }
-
-    function stopScanner() {
-        if (html5QrCode && html5QrCode.isScanning) {
-            html5QrCode.stop().then(() => {
-                forceCloseScanner();
-            }).catch((err) => {
-                console.error("Stop failed: ", err);
-                forceCloseScanner();
-            });
-        } else {
-            forceCloseScanner();
-        }
-    }
-
-    function forceCloseScanner() {
-        document.getElementById('scanner-overlay').style.display = 'none';
-        document.getElementById('scanner-modal').style.display = 'none';
-        if (html5QrCode) {
-            try {
-                html5QrCode.clear();
-            } catch (e) {
-                console.log("Clear failed: ", e);
-            }
-        }
     }
 </script>
 
