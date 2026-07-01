@@ -667,7 +667,6 @@
     </div>
 </div>
 
-<!-- --- INTEGRATED CYBER CAFE SECTION --- -->
 <div id="cyber-cafe-section" class="app-section">
     <div class="container" style="max-width: 1100px;">
         <button class="btn-back" onclick="showDashboard()">← Back to Dashboard</button>
@@ -715,6 +714,16 @@
                         <label style="color:#333;">Remarks / Note (Optional)</label>
                         <input type="text" id="cafe-remarks" placeholder="Mobile no ba details">
                     </div>
+                    <div class="info-group">
+                        <label style="color:#333; font-weight: bold;">Kajti Ke Koreche? (User Name)</label>
+                        <select id="cafe-user-name" required style="width: 100%; border: 1px solid #ccc; padding: 8px; border-radius: 4px; font-size: 14px; background-color: #fffdf6; border-left: 3px solid #e5a93b;">
+                            <option value="">Select User Name</option>
+                            <option value="Ashis Chowdhury">Ashis Chowdhury</option>
+                            <option value="Mukesh Barman">Mukesh Barman</option>
+                            <option value="Rakesh Barman">Rakesh Barman</option>
+                            <option value="Rabin Barman">Rabin Barman</option>
+                        </select>
+                    </div>
                     <button type="submit" style="width: 100%; padding: 12px; background-color: var(--cafe-primary); color: white; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer;">Data Save Korun</button>
                 </form>
             </div>
@@ -726,10 +735,20 @@
                     <div class="cafe-card orange"><h3>Ajker Earning</h3><p>₹<span id="todayEarnings">0</span></p></div>
                 </div>
 
-                <div style="display: flex; gap: 10px; margin-bottom: 15px; align-items: center; flex-wrap: wrap;">
-                    <label for="filterDate" style="font-weight:600; font-size:14px;">Date Onujayi Filter:</label>
-                    <input type="date" id="filterDate" style="padding: 6px; border: 1px solid #ccc; border-radius: 4px;">
-                    <button id="clearFilter" style="width:auto; padding:6px 12px; font-size:12px; background-color:#6c757d; color:white; border:none; border-radius:4px; cursor:pointer;">All Reset</button>
+                <div style="display: flex; gap: 10px; margin-bottom: 15px; align-items: center; flex-wrap: wrap; background-color: #f8fafc; padding: 10px; border-radius: 6px; border: 1px solid #e2e8f0;">
+                    <span style="font-weight:600; font-size:13px; color:#475569;">Filter Panels:</span>
+                    
+                    <input type="date" id="filterDate" style="padding: 6px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 13px;">
+                    
+                    <select id="filterUser" style="padding: 6px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 13px; background: white;">
+                        <option value="">All Users Filter</option>
+                        <option value="Ashis Chowdhury">Ashis Chowdhury</option>
+                        <option value="Mukesh Barman">Mukesh Barman</option>
+                        <option value="Rakesh Barman">Rakesh Barman</option>
+                        <option value="Rabin Barman">Rabin Barman</option>
+                    </select>
+
+                    <button id="clearFilter" style="width:auto; padding:6px 12px; font-size:12px; background-color:#6c757d; color:white; border:none; border-radius:4px; cursor:pointer; font-weight: bold;">All Reset</button>
                 </div>
 
                 <div class="cafe-table-container">
@@ -740,7 +759,7 @@
                                 <th style="background-color:#f8f9fa; color:#555; font-size:13px;">Naam</th>
                                 <th style="background-color:#f8f9fa; color:#555; font-size:13px;">Service</th>
                                 <th style="background-color:#f8f9fa; color:#555; font-size:13px;">Taka (₹)</th>
-                                <th style="background-color:#f8f9fa; color:#555; font-size:13px;">Remarks</th>
+                                <th style="background-color:#f8f9fa; color:#555; font-size:13px;">User</th>
                                 <th style="background-color:#f8f9fa; color:#555; font-size:13px;">Action</th>
                             </tr>
                         </thead>
@@ -1021,12 +1040,13 @@
             cafeDataList = cloudData ? Object.values(cloudData) : [];
             localStorage.setItem(STORAGE_KEY, JSON.stringify(cafeDataList));
             calculateCafeStats();
-            renderCafeTable();
+            // Default filter list empty rakhbo dynamic data view er jonno
+            renderCafeTable(document.getElementById('filterDate').value, document.getElementById('filterUser').value);
         }).catch((err) => {
             console.error("Cloud Fetch Failed, falling back to LocalStorage:", err);
             cafeDataList = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
             calculateCafeStats();
-            renderCafeTable();
+            renderCafeTable(document.getElementById('filterDate').value, document.getElementById('filterUser').value);
         });
     }
 
@@ -1040,14 +1060,24 @@
         document.getElementById('todayEarnings').textContent = cafeDataList.filter(item => item.date === currentLocalToday).reduce((sum, item) => sum + Number(item.amount), 0);
     }
 
-    function renderCafeTable(filterDate = '') {
+    // MULTI-FILTER ENGINE (DATE & USER SYNC TOGETHER)
+    function renderCafeTable(filterDate = '', filterUser = '') {
         const ledgerBody = document.getElementById('ledgerBody');
         ledgerBody.innerHTML = '';
-        let filteredList = filterDate ? cafeDataList.filter(item => item.date === filterDate) : cafeDataList;
+        
+        let filteredList = cafeDataList;
+        
+        if (filterDate) {
+            filteredList = filteredList.filter(item => item.date === filterDate);
+        }
+        if (filterUser) {
+            filteredList = filteredList.filter(item => item.user === filterUser);
+        }
+        
         filteredList.sort((a, b) => new Date(b.date) - new Date(a.date));
 
         if (filteredList.length === 0) {
-            ledgerBody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#888; padding:20px;">Kono record nei.</td></tr>`;
+            ledgerBody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#888; padding:20px;">Kono matching record nei.</td></tr>`;
             return;
         }
 
@@ -1060,7 +1090,8 @@
                 <td><strong>${escapeHtml(item.name)}</strong></td>
                 <td><span style="background-color:#eef1f6; padding:3px 8px; border-radius:4px; font-size:12px;">${escapeHtml(item.service)}</span></td>
                 <td style="font-weight:600; color:#2b9348;">₹${item.amount}</td>
-                <td style="color:#666; font-size:13px;">${escapeHtml(item.remarks || '-')}</td>
+                <td><span style="color:#4a1525; font-weight:600; font-size:12px;">👤 ${escapeHtml(item.user || 'Unknown')}</span></td>
+                <td style="color:#666; font-size:12px;">${escapeHtml(item.remarks || '-')}</td>
                 <td><button class="cafe-btn-delete" onclick="deleteCafeEntry('${item.id}')">Delete</button></td>
             `;
             ledgerBody.appendChild(tr);
@@ -1078,6 +1109,7 @@
             name: document.getElementById('cafe-name').value.trim(),
             service: document.getElementById('cafe-service').value,
             amount: parseFloat(document.getElementById('cafe-amount').value) || 0,
+            user: document.getElementById('cafe-user-name').value, // USER DATA ADDED
             remarks: document.getElementById('cafe-remarks').value.trim()
         };
 
@@ -1086,14 +1118,15 @@
             cafeDataList.push(newRecord);
             localStorage.setItem(STORAGE_KEY, JSON.stringify(cafeDataList));
             calculateCafeStats();
-            renderCafeTable(document.getElementById('filterDate').value);
+            renderCafeTable(document.getElementById('filterDate').value, document.getElementById('filterUser').value);
             
             // ফর্ম ফিল্ড রিসেট
             document.getElementById('cafe-name').value = '';
             document.getElementById('cafe-service').value = '';
             document.getElementById('cafe-amount').value = '';
             document.getElementById('cafe-remarks').value = '';
-            alert('✔ Cyber Cafe Data successfully saved to Cloud Engine!');
+            document.getElementById('cafe-user-name').value = ''; 
+            alert('✔ Cyber Cafe Data with User identity successfully saved to Cloud Engine!');
         }).catch((err) => {
             console.error("Firebase save failed:", err);
             alert("❌ ক্লাউডে সেভ করা সম্ভব হয়নি।");
@@ -1109,7 +1142,7 @@
                 cafeDataList = cafeDataList.filter(item => item.id !== id);
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(cafeDataList)); 
                 calculateCafeStats(); 
-                renderCafeTable(document.getElementById('filterDate').value);
+                renderCafeTable(document.getElementById('filterDate').value, document.getElementById('filterUser').value);
                 alert('Data-ti successfully cloud & local theke delete kora hoyeche.');
             }).catch((err) => {
                 alert("❌ ক্লাউড থেকে ডিলিট করা যায়নি।");
@@ -1119,13 +1152,25 @@
         }
     }
 
-    document.getElementById('filterDate').addEventListener('change', function() { renderCafeTable(this.value); });
-    document.getElementById('clearFilter').addEventListener('click', function() { document.getElementById('filterDate').value = ''; renderCafeTable(); });
+    // FILTER TRIGGERS ON CHANGE EVENTS
+    document.getElementById('filterDate').addEventListener('change', function() { 
+        renderCafeTable(this.value, document.getElementById('filterUser').value); 
+    });
+    
+    document.getElementById('filterUser').addEventListener('change', function() { 
+        renderCafeTable(document.getElementById('filterDate').value, this.value); 
+    });
+
+    document.getElementById('clearFilter').addEventListener('click', function() { 
+        document.getElementById('filterDate').value = ''; 
+        document.getElementById('filterUser').value = ''; 
+        renderCafeTable(); 
+    });
 
     document.getElementById('exportCSV').addEventListener('click', () => {
         if(cafeDataList.length === 0) { alert('Kono data nei!'); return; }
-        let csvContent = "Tarikh,Customer Name,Service Type,Amount (INR),Remarks\n";
-        cafeDataList.forEach(item => { csvContent += `"${item.date}","${item.name.replace(/"/g, '""')}","${item.service}","${item.amount}","${(item.remarks || '').replace(/"/g, '""')}"\n`; });
+        let csvContent = "Tarikh,Customer Name,Service Type,Amount (INR),Assigned User,Remarks\n";
+        cafeDataList.forEach(item => { csvContent += `"${item.date}","${item.name.replace(/"/g, '""')}","${item.service}","${item.amount}","${item.user || 'Unknown'}","${(item.remarks || '').replace(/"/g, '""')}"\n`; });
         
         const blob = new Blob([new Uint8Array([0xEF, 0xBB, 0xBF]), csvContent], { type: "text/csv;charset=utf-8;" });
         const link = document.createElement("a");
